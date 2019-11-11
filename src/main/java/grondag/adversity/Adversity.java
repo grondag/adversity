@@ -64,7 +64,7 @@ import net.minecraft.resource.ResourceType;
 
 public class Adversity implements ModInitializer {
 	public static final String MOD_ID = "adversity";
-	public static final Logger LOGGER = LogManager.getLogger("Adversity");
+	public static final Logger LOG = LogManager.getLogger("Adversity");
 	public static final Registrar REG = new Registrar(MOD_ID, "doom_sapling");
 
 	static Supplier<PlayerEntity> PLAYER_PROXY = () -> null;
@@ -78,6 +78,7 @@ public class Adversity implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		AdversityConfig.values();
 		AdversityBlocks.values();
 		AdversityFluids.values();
 		AdversityItems.values();

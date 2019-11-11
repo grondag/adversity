@@ -21,6 +21,7 @@
  ******************************************************************************/
 package grondag.adversity.block.treeheart;
 
+import grondag.adversity.AdversityConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
@@ -60,11 +61,7 @@ public final class DoomTreeTracker {
 
 	static final int GROW_LIMIT = LIMIT * 4;
 
-	// FEAT: make configurable
-	static final int MAX_TREES = 3;
-
-
-	static final ObjectArrayList<TreeData> TREES = new ObjectArrayList<>(MAX_TREES);
+	static final ObjectArrayList<TreeData> TREES = new ObjectArrayList<>(AdversityConfig.MAX_ACTIVE_TREES);
 
 	public static void clear() {
 		TREES.clear();
@@ -130,7 +127,7 @@ public final class DoomTreeTracker {
 	}
 
 	public static boolean canGrow(World world, BlockPos pos) {
-		if (TREES.size() >= MAX_TREES || (255 - pos.getY()) < 64) return false;
+		if (TREES.size() >= AdversityConfig.MAX_ACTIVE_TREES || (255 - pos.getY()) < 64) return false;
 
 		final int dim = world.dimension.getType().getRawId();
 
