@@ -22,6 +22,7 @@
 
 package grondag.adversity.adversary;
 
+import grondag.adversity.AdversityConfig;
 import grondag.fermion.simulator.SimulationTickable;
 import grondag.fermion.simulator.Simulator;
 import grondag.fermion.simulator.persistence.SimulationTopNode;
@@ -31,8 +32,18 @@ import net.minecraft.nbt.CompoundTag;
 public class Adversary extends SimulationTopNode implements SimulationTickable {
 	public static final String ADVERSARY_TAG = NBTDictionary.claim("adversary_sim");
 
+	private boolean isPaused = !AdversityConfig.ADVERSARY_ACTIVE;
+
 	public Adversary() {
 		super(ADVERSARY_TAG);
+	}
+
+	public void setActive(boolean isActive) {
+		isPaused = !isActive;
+	}
+
+	public boolean isActive() {
+		return !isPaused;
 	}
 
 	@Override
@@ -71,6 +82,8 @@ public class Adversary extends SimulationTopNode implements SimulationTickable {
 
 	@Override
 	public void doOnTick() {
+		if (isPaused) return;
+
 		//		markDirty();
 	}
 
@@ -81,6 +94,7 @@ public class Adversary extends SimulationTopNode implements SimulationTickable {
 
 	@Override
 	public void doOffTick() {
+		if (isPaused) return;
 		//		markDirty();
 	}
 }
