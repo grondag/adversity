@@ -26,6 +26,7 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import grondag.adversity.adversary.Adversary;
 import grondag.adversity.block.treeheart.DoomTreeTracker;
 import grondag.adversity.registry.AdversityBlocks;
 import grondag.adversity.registry.AdversityEffects;
@@ -39,6 +40,7 @@ import grondag.adversity.registry.AdversityRecipes;
 import grondag.adversity.registry.AdversitySounds;
 import grondag.adversity.registry.AdversityTags;
 import grondag.fermion.registrar.Registrar;
+import grondag.fermion.simulator.Simulator;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.server.ServerStartCallback;
 import net.fabricmc.fabric.api.event.server.ServerStopCallback;
@@ -95,5 +97,7 @@ public class Adversity implements ModInitializer {
 		ServerStopCallback.EVENT.register(AdversityRecipes.HELPER::stop);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(AdversityRecipes.HELPER);
 		LootTableLoadingCallback.EVENT.register(AdversityLoot::init);
+
+		Simulator.register(Adversary.ADVERSARY_TAG, Adversary::new);
 	}
 }
