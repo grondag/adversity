@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "adversity:warded_concrete_powder"
+  },
+  "result": "adversity:warded_concrete",
+  "cost": 19200
+}

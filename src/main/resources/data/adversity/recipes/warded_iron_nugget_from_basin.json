@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "minecraft:iron_nugget"
+  },
+  "result": "adversity:warded_iron_nugget",
+  "cost": 10666
+}

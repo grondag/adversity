@@ -1,0 +1,10 @@
+{
+	"replace": false,
+	"values": [
+		"#adversity:encrusted_tools",
+		"adversity:encrusted_boots",
+		"adversity:encrusted_chestplate",
+		"adversity:encrusted_helmet",
+		"adversity:encrusted_leggings"
+	]
+}

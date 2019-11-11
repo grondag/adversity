@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "adversity:warded_wood_planks"
+    }
+  ],
+  "result": {
+    "item": "adversity:warded_wood_button"
+  }
+}

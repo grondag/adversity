@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "adversity:block/warded_diamond_block" }
+    }
+}

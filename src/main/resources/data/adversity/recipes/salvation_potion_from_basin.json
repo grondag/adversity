@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "adversity:milk_potion"
+  },
+  "result": "adversity:salvation_potion",
+  "cost": 288000
+}

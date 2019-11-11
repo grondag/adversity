@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:warded_iron_chestplate"
+  },
+  "result": "adversity:warded_iron_chestplate",
+  "cost": 768000
+}

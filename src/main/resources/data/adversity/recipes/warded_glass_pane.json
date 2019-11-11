@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "warded_glass_pane",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_glass"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_glass_pane",
+    "count": 16
+  }
+}

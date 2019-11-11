@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:warded_iron_sword"
+  },
+  "result": "adversity:warded_iron_sword",
+  "cost": 192000
+}

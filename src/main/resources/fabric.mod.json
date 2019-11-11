@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"id": "adversity",
+	"version": "${version}",
+	"name": "Adversity",
+	"description": "Epic science fantasy with hard sci-fi leanings. Deigned to challenge hardcore players.",
+	"authors": [
+		{
+			"name": "Grondag",
+			"contact": {
+				"github": "https://github.com/grondag"
+			}
+		}
+	],
+	"contributors": [
+	],
+	"contact": {
+		"homepage": "https://github.com/grondag/adversity",
+		"sources": "https://github.com/grondag/adversity"
+	},
+	"license": "MIT",
+	"icon": "assets/adversity/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"grondag.adversity.Adversity"
+		],
+		"client": [
+			"grondag.adversity.AdversityClient"
+		],
+	    "rei_plugins_v0": [
+	      "grondag.adversity.compat.rei.AdversityReiPlugin"
+	    ]
+	},
+	"mixins": [
+	  {
+	  	  "config": "adversity.common.json",
+	      "environment": "*"
+	  }
+    ],
+	"depends": {
+		"fabricloader": ">=0.4.0",
+		"fabric": "*"
+	}
+}

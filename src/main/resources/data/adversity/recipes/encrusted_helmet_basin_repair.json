@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:encrusted_helmet"
+  },
+  "result": "adversity:encrusted_helmet",
+  "cost": 960000
+}

@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:encrusted_chestplate"
+  },
+  "result": "adversity:encrusted_chestplate",
+  "cost": 1536000
+}

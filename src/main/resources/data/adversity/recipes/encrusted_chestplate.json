@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XAX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "adversity:warded_diamond"
+    },
+    "A": {
+      "item": "adversity:warded_iron_chestplate"
+    }
+  },
+  "result": {
+    "item": "adversity:encrusted_chestplate"
+  }
+}

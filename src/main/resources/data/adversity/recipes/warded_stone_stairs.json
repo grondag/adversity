@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_stone"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_stone_stairs",
+    "count": 4
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "parent": "block/slab",
+    "textures": {
+        "bottom": "adversity:block/warded_stone",
+        "top": "adversity:block/warded_stone",
+        "side": "adversity:block/warded_stone"
+    }
+}

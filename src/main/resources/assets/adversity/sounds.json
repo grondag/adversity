@@ -1,0 +1,60 @@
+{
+	"boil": {
+		"category": "neutral",
+		"sounds": ["adversity:boil"],
+		"subtitle": "subtitle.adversity.boil"
+	},
+	"miasma": {
+		"category": "neutral",
+		"sounds": ["adversity:miasma_1", "adversity:miasma_2"],
+		"subtitle": "subtitle.adversity.miasma"
+	},
+	"doom_start": {
+		"category": "neutral",
+		"sounds": ["adversity:doom_start"],
+		"subtitle": "subtitle.adversity.doom_start",
+		"stream": true
+	},
+	"doom_summon": {
+		"category": "neutral",
+		"sounds": ["adversity:doom_summon"],
+		"subtitle": "subtitle.adversity.doom_summon",
+		"stream": true
+	},
+		"walker_shot": {
+		"category": "hostile",
+		"sounds": ["adversity:pulse_0", "adversity:pulse_1"],
+		"subtitle": "subtitle.adversity.walker_shot",
+		"stream": true
+	},
+		"walker_charge": {
+		"category": "hostile",
+		"sounds": ["adversity:charge"],
+		"subtitle": "subtitle.adversity.walker_charge",
+		"stream": true
+	},
+		"walker_death": {
+		"category": "hostile",
+		"sounds": ["adversity:walker_death"],
+		"subtitle": "subtitle.adversity.walker_death",
+		"stream": true
+	},
+		"walker_hurt": {
+		"category": "hostile",
+		"sounds": ["adversity:walker_hurt_0", "adversity:walker_hurt_1", "adversity:walker_hurt_2", "adversity:walker_hurt_3"],
+		"subtitle": "subtitle.adversity.walker_hurt",
+		"stream": true
+	},
+		"walker_say": {
+		"category": "hostile",
+		"sounds": ["adversity:walker_say_0", "adversity:walker_say_1", "adversity:walker_say_2"],
+		"subtitle": "subtitle.adversity.walker_say",
+		"stream": true
+	},
+		"walker_step": {
+		"category": "hostile",
+		"sounds": ["adversity:walker_step_0", "adversity:walker_step_1", "adversity:walker_step_2", "adversity:walker_step_3"],
+		"subtitle": "subtitle.adversity.walker_step",
+		"stream": true
+	}
+}

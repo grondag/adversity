@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "": [
+            { "model": "adversity:block/generative_matrix" },
+            { "model": "adversity:block/generative_matrix", "y": 90 },
+            { "model": "adversity:block/generative_matrix", "y": 180 },
+            { "model": "adversity:block/generative_matrix", "y": 270 }
+        ]
+    }
+}

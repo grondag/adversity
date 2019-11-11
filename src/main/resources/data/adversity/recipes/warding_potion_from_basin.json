@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "minecraft:glass_bottle"
+  },
+  "result": "adversity:warding_potion",
+  "cost": 288000
+}

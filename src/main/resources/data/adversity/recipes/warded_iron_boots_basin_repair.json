@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:warded_iron_boots"
+  },
+  "result": "adversity:warded_iron_boots",
+  "cost": 384000
+}

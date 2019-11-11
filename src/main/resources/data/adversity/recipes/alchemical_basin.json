@@ -1,0 +1,31 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"dgd",
+		"lbl",
+		"ene"
+	],
+	"key": {
+		"b": {
+			"item": "adversity:alchemical_basin_frame"
+		},
+		"l": {
+			"item": "minecraft:lapis_lazuli"
+		},
+		"g": {
+			"item": "minecraft:glass"
+		},
+		"d": {
+			"item": "minecraft:diamond"
+		},
+		"e": {
+			"item": "minecraft:emerald"
+		},
+		"n": {
+			"item": "adversity:alchemical_engine"
+		}
+	},
+	"result": {
+		"item": "adversity:inert_alchemical_basin"
+	}
+}

@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "minecraft:stick"
+  },
+  "result": "adversity:warded_stick",
+  "cost": 6000
+}

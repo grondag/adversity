@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NNN",
+    "ISI",
+    "NNN"
+  ],
+  "key": {
+    "S": {
+      "item": "adversity:warded_barrel_shell"
+    },
+    "I": {
+      "item": "adversity:warded_iron_ingot"
+    },
+    "N": {
+      "item": "adversity:warded_iron_nugget"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_barrel"
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "": [
+            { "model": "adversity:block/warded_stone" },
+            { "model": "adversity:block/warded_stone_mirrored" },
+            { "model": "adversity:block/warded_stone", "y": 180 },
+            { "model": "adversity:block/warded_stone_mirrored", "y": 180 }
+        ]
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "adversity:warded_wood_log"
+    }
+  ],
+  "result": {
+    "item": "adversity:warded_wood_planks",
+    "count": 4
+  }
+}

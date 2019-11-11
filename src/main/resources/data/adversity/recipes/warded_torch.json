@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_stick"
+    },
+    "X": {
+      "item": "adversity:doom_fragment"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_torch",
+    "count": 1
+  }
+}

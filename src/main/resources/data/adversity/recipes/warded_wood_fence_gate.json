@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#W#",
+    "#W#"
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_stick"
+    },
+    "W": {
+      "item": "adversity:warded_wood_planks"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_wood_fence_gate"
+  }
+}

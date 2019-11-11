@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y":  { "model": "adversity:block/stripped_warded_wood_log" },
+        "axis=z":   { "model": "adversity:block/stripped_warded_wood_log", "x": 90 },
+        "axis=x":   { "model": "adversity:block/stripped_warded_wood_log", "x": 90, "y": 90 }
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:encrusted_hoe"
+  },
+  "result": "adversity:encrusted_hoe",
+  "cost": 384000
+}

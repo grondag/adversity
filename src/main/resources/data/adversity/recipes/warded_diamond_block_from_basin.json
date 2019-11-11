@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "minecraft:diamond_block"
+  },
+  "result": "adversity:warded_diamond_block",
+  "cost": 1728000
+}

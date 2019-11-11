@@ -1,0 +1,22 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"rrr",
+		"rbr",
+		"rnr"
+	],
+	"key": {
+		"b": {
+			"item": "adversity:alchemical_brazier_frame"
+		},
+		"r": {
+			"item": "minecraft:redstone"
+		},
+		"n": {
+			"item": "adversity:alchemical_engine"
+		}
+	},
+	"result": {
+		"item": "adversity:inert_alchemical_brazier"
+	}
+}

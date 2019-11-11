@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SBS",
+    "BWB",
+    "GBG"
+  ],
+  "key": {
+    "B": {
+      "item": "adversity:warded_iron_bars"
+    },
+    "W": {
+      "item": "adversity:warding_essence"
+    },
+    "S": {
+      "item": "minecraft:sand"
+    },
+    "G": {
+      "item": "minecraft:gravel"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_concrete_powder",
+    "count": 4
+  }
+}

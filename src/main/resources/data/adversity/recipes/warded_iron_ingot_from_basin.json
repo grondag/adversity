@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
+  "result": "adversity:warded_iron_ingot",
+  "cost": 96000
+}

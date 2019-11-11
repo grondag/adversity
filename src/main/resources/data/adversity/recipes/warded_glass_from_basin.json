@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "minecraft:glass"
+  },
+  "result": "adversity:warded_glass",
+  "cost": 96000
+}

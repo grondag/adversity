@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_brazier",
+  "ingredient": {
+    "item": "adversity:doomed_residue"
+  },
+  "result": "adversity:warding_essence",
+  "cost": 96000
+}

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "": [
+            { "model": "adversity:block/doomed_earth" },
+            { "model": "adversity:block/doomed_earth", "y": 90 },
+            { "model": "adversity:block/doomed_earth", "y": 180 },
+            { "model": "adversity:block/doomed_earth", "y": 270 }
+        ]
+    }
+}

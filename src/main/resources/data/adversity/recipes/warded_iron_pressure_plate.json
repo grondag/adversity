@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_iron_pressure_plate"
+  }
+}

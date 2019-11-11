@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "adversity:block/warded_wood_log_top",
+        "side": "adversity:block/warded_wood_log"
+    }
+}

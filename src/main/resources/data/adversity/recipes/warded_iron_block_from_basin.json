@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "minecraft:iron_block"
+  },
+  "result": "adversity:warded_iron_block",
+  "cost": 864000
+}

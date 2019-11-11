@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:encrusted_boots"
+  },
+  "result": "adversity:encrusted_boots",
+  "cost": 768000
+}

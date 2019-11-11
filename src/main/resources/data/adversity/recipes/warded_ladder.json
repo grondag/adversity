@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #",
+    "###",
+    "# #"
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_stick"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_ladder",
+    "count": 3
+  }
+}

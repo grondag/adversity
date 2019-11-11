@@ -1,0 +1,7 @@
+{
+    "parent": "adversity:block/template_glass_pane_side_alt",
+    "textures": {
+        "edge": "adversity:block/warded_glass_pane_top",
+        "pane": "adversity:block/warded_glass"
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "adversity:warded_iron_hoe"
+  	},
+  	{
+      "item": "adversity:warded_diamond"
+  	},
+  	{
+      "item": "adversity:warded_diamond"
+  	}
+  ],
+  "result": {
+    "item": "adversity:encrusted_hoe"
+  }
+}

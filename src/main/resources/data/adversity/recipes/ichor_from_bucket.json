@@ -1,0 +1,11 @@
+{
+	"type": "adversity:ichor_recipe",
+	"input": [
+		{
+			"item": "minecraft:water_bucket"
+		}
+	],
+	"result": {
+		"item": "adversity:ichor_bucket"
+	}
+}

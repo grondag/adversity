@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:warded_iron_shovel"
+  },
+  "result": "adversity:warded_iron_shovel",
+  "cost": 96000
+}

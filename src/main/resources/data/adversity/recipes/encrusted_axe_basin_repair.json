@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:encrusted_axe"
+  },
+  "result": "adversity:encrusted_axe",
+  "cost": 576000
+}

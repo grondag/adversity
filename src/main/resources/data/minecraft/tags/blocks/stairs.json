@@ -1,0 +1,7 @@
+{
+	"replace": false,
+	"values": [
+	  "adversity:warded_stone_brick_stairs",
+	  "adversity:warded_stone_stairs"
+	]
+}

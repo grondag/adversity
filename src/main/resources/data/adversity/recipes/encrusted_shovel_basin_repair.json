@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:encrusted_shovel"
+  },
+  "result": "adversity:encrusted_shovel",
+  "cost": 192000
+}

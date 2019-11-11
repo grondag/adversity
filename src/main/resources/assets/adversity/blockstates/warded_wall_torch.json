@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=east": { "model": "adversity:block/warded_wall_torch" },
+        "facing=south": { "model": "adversity:block/warded_wall_torch", "y": 90 },
+        "facing=west": { "model": "adversity:block/warded_wall_torch", "y": 180 },
+        "facing=north": { "model": "adversity:block/warded_wall_torch", "y": 270 }
+    }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_stone"
+    },
+    "X": {
+      "item": "adversity:warded_stick"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_lever"
+  }
+}

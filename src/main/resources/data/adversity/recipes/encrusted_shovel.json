@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "adversity:warded_iron_shovel"
+  	},
+  	{
+      "item": "adversity:warded_diamond"
+  	}
+  ],
+  "result": {
+    "item": "adversity:encrusted_shovel"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "item": "minecraft:stone"
+  },
+  "result": "adversity:warded_stone",
+  "cost": 96000
+}

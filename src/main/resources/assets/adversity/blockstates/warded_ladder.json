@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "adversity:block/warded_ladder" },
+        "facing=east":  { "model": "adversity:block/warded_ladder", "y": 90 },
+        "facing=south": { "model": "adversity:block/warded_ladder", "y": 180 },
+        "facing=west":  { "model": "adversity:block/warded_ladder", "y": 270 }
+    }
+}

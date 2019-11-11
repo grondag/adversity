@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin",
+  "ingredient": {
+    "tag": "minecraft:logs"
+  },
+  "result": "adversity:warded_wood_log",
+  "cost": 96000
+}

@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:warded_iron_pickaxe"
+  },
+  "result": "adversity:warded_iron_pickaxe",
+  "cost": 288000
+}

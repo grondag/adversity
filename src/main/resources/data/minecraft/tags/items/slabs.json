@@ -1,0 +1,8 @@
+{
+	"replace": false,
+	"values": [
+		"adversity:warded_stone_slab",
+		"adversity:warded_stone_brick_slab",
+		"adversity:warded_smooth_stone_slab"
+	]
+}

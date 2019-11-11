@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X#X",
+    "XXX"
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_torch"
+    },
+    "X": {
+      "item": "adversity:warded_iron_nugget"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_lantern"
+  }
+}

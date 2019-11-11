@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_basin_repair",
+  "ingredient": {
+    "item": "adversity:encrusted_leggings"
+  },
+  "result": "adversity:encrusted_leggings",
+  "cost": 1334000
+}

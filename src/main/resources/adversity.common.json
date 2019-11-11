@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "grondag.adversity.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinLivingEntity",
+    "MixinMilkBucketItem",
+    "MixinStatusEffectInstance",
+    "MixinWanderingTraderEntity"
+      ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

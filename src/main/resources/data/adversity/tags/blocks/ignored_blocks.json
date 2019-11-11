@@ -1,0 +1,22 @@
+{
+	"replace": false,
+	"values": [
+		"#adversity:warded_blocks",
+		"#adversity:protected_blocks",
+		"adversity:miasma",
+		"adversity:doom_gleam",
+		"adversity:doom_heart",
+		"adversity:doom_sapling",
+		"adversity:doom_leaves",
+		"adversity:doom_log_p",
+		"adversity:doom_log_channel_p",
+		"adversity:doom_log_terminal_p",
+		"adversity:doom_log",
+		"adversity:doom_log_channel",
+		"adversity:doom_log_terminal",
+		"adversity:doomed_log",
+		"adversity:doomed_earth",
+		"adversity:doomed_stone",
+		"adversity:ichor"
+	]
+}

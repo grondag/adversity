@@ -1,0 +1,8 @@
+{
+  "type": "adversity:alchemical_brazier",
+  "ingredient": {
+    "item": "adversity:warded_stone"
+  },
+  "result": "adversity:warded_smooth_stone",
+  "cost": 12000
+}

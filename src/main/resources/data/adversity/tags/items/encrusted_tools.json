@@ -1,0 +1,10 @@
+{
+	"replace": false,
+	"values": [
+		"adversity:encrusted_shovel",
+		"adversity:encrusted_hoe",
+		"adversity:encrusted_pickaxe",
+		"adversity:encrusted_axe",
+		"adversity:encrusted_sword"
+	]
+}

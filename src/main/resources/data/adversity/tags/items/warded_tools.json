@@ -1,0 +1,11 @@
+{
+	"replace": false,
+	"values": [
+		"#adversity:encrusted_tools",
+		"adversity:warded_iron_shovel",
+		"adversity:warded_iron_hoe",
+		"adversity:warded_iron_pickaxe",
+		"adversity:warded_iron_axe",
+		"adversity:warded_iron_sword"
+	]
+}

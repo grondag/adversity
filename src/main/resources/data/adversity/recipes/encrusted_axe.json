@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "adversity:warded_iron_axe"
+  	},
+  	{
+      "item": "adversity:warded_diamond"
+  	},
+  	{
+      "item": "adversity:warded_diamond"
+  	},
+  	  	{
+      "item": "adversity:warded_diamond"
+  	}
+  ],
+  "result": {
+    "item": "adversity:encrusted_axe"
+  }
+}

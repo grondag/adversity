@@ -1,0 +1,6 @@
+{
+    "parent": "block/template_torch",
+    "textures": {
+        "torch": "adversity:block/warded_torch"
+    }
+}

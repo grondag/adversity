@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "adversity:block/warded_stone_pressure_plate" },
+        "powered=true": { "model": "adversity:block/warded_stone_pressure_plate_down" }
+    }
+}

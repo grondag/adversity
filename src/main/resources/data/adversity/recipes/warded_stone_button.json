@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "adversity:warded_stone"
+    }
+  ],
+  "result": {
+    "item": "adversity:warded_stone_button"
+  }
+}

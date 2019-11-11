@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    " X "
+  ],
+  "key": {
+    "#": {
+      "item": "adversity:warded_wood_planks"
+    },
+    "X": {
+      "item": "adversity:warded_stick"
+    }
+  },
+  "result": {
+    "item": "adversity:warded_wood_sign",
+    "count": 3
+  }
+}
