@@ -1,0 +1,44 @@
+<? adversity:test
+
+**Here am some text!**
+
+Woo!
+
+================================================================= ?>
+
+<? sb_scale
+
+**Shit Box Scale**
+
+Classifies risk of encountered artifacts.
+
+0. Prior experience indicates ~~no~~ minimal risk.
+
+1. Might be a Shit Box.
+
+2. _Probably_ a Shit Box.
+
+3. ++Shit Box++: Has unpleasant effects if handled improperly.
+
+4. ++Rusty++ Shit Box:  One or more mechanisms appear to be broken or 
+malfunctioning. Effects may be unpredictable.
+
+5. ++Dangerous++ Rusty Shit Box: Effects may result in permanent harm to 
+individuals handling the artifact or to assets in immediate proximity.
+
+6. Dangerous ++Radioactive++ Rusty Shit Box: Effects of the artifact may extend 
+to individuals or assets kilometers away.
+
+7. ++Planet-Killer++ Shit Box: As with 6, but effects extend to entire planet,
+orbital or construct of similar scale.  Localities known to house class 7 artifacts
+are to be placed under *strict* quarantine, per [REDACTED].
+
+8. ++Star-Killer++ Shit Box: As with 7, but effects extend to entire solar system.
+Quarantine policy applies at system level.
+
+9. ++Galactic++ Shit Box: Artifact poses a significant threat of material harm to the
+local galaxy and is to be contained or destroyed at any cost.
+
+10. ++Cosmic++ Shit Box: Artifact threatens reality itself. Contain or destroy at any cost.
+
+================================================================= ?>

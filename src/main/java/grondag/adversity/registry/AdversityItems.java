@@ -24,6 +24,7 @@ package grondag.adversity.registry;
 import static grondag.adversity.Adversity.REG;
 
 import grondag.adversity.item.MilkPotion;
+import grondag.adversity.item.NoteItem;
 import grondag.adversity.item.SalvationPotion;
 import grondag.adversity.item.WardingPotion;
 import grondag.fermion.block.sign.OpenSignItem;
@@ -67,6 +68,8 @@ public enum AdversityItems {
 	public static Item WARDING_POTION = REG.item("warding_potion", new WardingPotion(REG.itemSettings().maxCount(16)));
 	public static Item MILK_POTION = REG.item("milk_potion", new MilkPotion(REG.itemSettings().maxCount(16)));
 	public static Item SALVATION_POTION = REG.item("salvation_potion", new SalvationPotion(REG.itemSettings().maxCount(16)));
+
+	public static Item MYSTERIOUS_NOTE = REG.item("mysterious_note", new NoteItem(REG.itemSettings().maxCount(1), "This am some msyterious shit.  Wooo!"));
 
 	public static final ArmorMaterial WARDED_IRON_ARMOR_MATERIAL = SimpleArmorMaterial.of("warded_iron", 17, new int[]{2, 5, 6, 2}, 10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.5F, WARDED_IRON_INGOT);
 	public static final Item WARDED_IRON_HELMET =  REG.armorItem("warded_iron_helmet", WARDED_IRON_ARMOR_MATERIAL, EquipmentSlot.HEAD);
