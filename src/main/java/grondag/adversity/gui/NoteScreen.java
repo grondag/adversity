@@ -41,7 +41,7 @@ public class NoteScreen extends AbstractSimpleScreen {
 
 	@Override
 	public void addControls(Panel mainPanel) {
-		mainPanel.add(new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale"))));
+		mainPanel.add(new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale")), font));
 	}
 
 	@Override

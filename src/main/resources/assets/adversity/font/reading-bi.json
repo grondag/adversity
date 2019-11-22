@@ -1,9 +1,0 @@
-{
-    "providers": [
-        {
-            "type": "ttf",
-            "file": "adversity:ubuntu-m.ttf",
-            "oversample": 16
-        }
-    ]
-}
