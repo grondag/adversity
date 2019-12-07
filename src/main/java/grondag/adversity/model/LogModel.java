@@ -26,13 +26,22 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import grondag.adversity.Adversity;
-import grondag.adversity.block.tree.DoomLogBlock;
-import grondag.fermion.client.models.SimpleModel;
-import grondag.fermion.client.models.SimpleModels;
 import it.unimi.dsi.fastutil.HashCommon;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.BlockRenderView;
+
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
@@ -40,46 +49,42 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ExtendedBlockView;
+
+import grondag.adversity.AdversityClient;
+import grondag.adversity.block.tree.DoomLogBlock;
+import grondag.fermion.client.models.SimpleModel;
+import grondag.fermion.client.models.SimpleModels;
 
 public class LogModel extends SimpleModel {
 
-	public static final List<Identifier> TEXTURES = Adversity.REG.idList(
-		"block/doom_log_0_0",
-		"block/doom_log_0_1",
-		"block/doom_log_0_2",
-		"block/doom_log_0_3",
-		"block/doom_log_1_0",
-		"block/doom_log_1_1",
-		"block/doom_log_1_2",
-		"block/doom_log_1_3");
+	public static final List<SpriteIdentifier> TEXTURES = AdversityClient.REGISTRAR.spriteIdList(SpriteAtlasTexture.BLOCK_ATLAS_TEX,
+			"block/doom_log_0_0",
+			"block/doom_log_0_1",
+			"block/doom_log_0_2",
+			"block/doom_log_0_3",
+			"block/doom_log_1_0",
+			"block/doom_log_1_1",
+			"block/doom_log_1_2",
+			"block/doom_log_1_3");
 
 	protected final Sprite innerSide;
 	protected final Sprite innerTop;
 	protected final Sprite[] outerSprite = new Sprite[TEXTURES.size()];
 	protected final Renderer renderer = RendererAccess.INSTANCE.getRenderer();
 	protected final RenderMaterial innerMaterial = renderer.materialFinder().emissive(0, true).disableAo(0, true).disableDiffuse(0, true).find();
-	protected final RenderMaterial outerMaterial = renderer.materialFinder().blendMode(0, BlockRenderLayer.TRANSLUCENT).find();
+	protected final RenderMaterial outerMaterial = renderer.materialFinder().blendMode(0, BlendMode.TRANSLUCENT).find();
 
-	protected LogModel(Sprite sprite, Function<Identifier, Sprite> spriteMap) {
+	protected LogModel(Sprite sprite, Function<SpriteIdentifier, Sprite> spriteMap) {
 		super(sprite, ModelHelper.MODEL_TRANSFORM_BLOCK);
-		innerSide = spriteMap.apply(new Identifier("minecraft:block/water_flow"));
-		innerTop = spriteMap.apply(new Identifier("minecraft:block/water_still"));
+		innerSide = spriteMap.apply(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEX, new Identifier("minecraft:block/water_flow")));
+		innerTop = spriteMap.apply(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEX, new Identifier("minecraft:block/water_still")));
 		for (int i = 0; i < outerSprite.length; i++) {
 			outerSprite[i] = spriteMap.apply(TEXTURES.get(i));
 		}
 	}
 
 	@Override
-	public final void emitBlockQuads(ExtendedBlockView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
+	public final void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
 		final QuadEmitter qe = context.getEmitter();
 		final long bits = HashCommon.mix(pos.asLong());
 		final int height = getHeight(state, pos.getY());
@@ -89,7 +94,7 @@ public class LogModel extends SimpleModel {
 	protected int getHeight(BlockState state, int y) {
 		final Block block = state.getBlock();
 		return (block instanceof DoomLogBlock) && !((DoomLogBlock) block).isPlaced
-			? getHeightFromState(state) : glowHeightFromY(y);
+				? getHeightFromState(state) : glowHeightFromY(y);
 	}
 
 	protected static int glowHeightFromY(int y) {
@@ -156,7 +161,7 @@ public class LogModel extends SimpleModel {
 		emitFace(qe, face, bits, height);
 	}
 
-	public static LogModel create(Function<Identifier, Sprite> spriteMap) {
+	public static LogModel create(Function<SpriteIdentifier, Sprite> spriteMap) {
 		return new LogModel(spriteMap.apply(TEXTURES.get(0)), spriteMap);
 	}
 
