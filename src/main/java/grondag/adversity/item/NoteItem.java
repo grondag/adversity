@@ -22,7 +22,6 @@
 
 package grondag.adversity.item;
 
-import grondag.adversity.gui.NoteScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -32,7 +31,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import grondag.adversity.gui.NoteScreen;
+
 public class NoteItem extends Item {
+	@SuppressWarnings("unused")
 	private final String text;
 
 	public NoteItem(Settings settings, String text) {
@@ -46,6 +48,6 @@ public class NoteItem extends Item {
 			MinecraftClient.getInstance().openScreen(new NoteScreen());
 		}
 
-		return new TypedActionResult<ItemStack>(ActionResult.SUCCESS, player.getStackInHand(hand));
+		return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
 	}
 }

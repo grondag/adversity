@@ -23,9 +23,6 @@ package grondag.adversity.block.player;
 
 import static grondag.adversity.block.player.AlchemicalBlockEntity.UNITS_PER_FRAGMENT;
 
-import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
-import grondag.adversity.registry.AdversityItems;
-import grondag.adversity.registry.AdversityRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -37,6 +34,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BooleanBiFunction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -45,6 +43,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
+import grondag.adversity.registry.AdversityItems;
+import grondag.adversity.registry.AdversityRecipes;
 
 public class BrazierBlock extends AlchemicalBlock {
 
@@ -55,7 +57,7 @@ public class BrazierBlock extends AlchemicalBlock {
 
 	public BrazierBlock(Block.Settings settings) {
 		super(settings, AdversityRecipes.BRAZIER_RECIPE_TYPE);
-		setDefaultState(stateFactory.getDefaultState().with(LIT, false));
+		setDefaultState(stateManager.getDefaultState().with(LIT, false));
 	}
 
 	@Override
@@ -79,32 +81,33 @@ public class BrazierBlock extends AlchemicalBlock {
 	}
 
 	@Override
-	public boolean activate(BlockState blockState, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (super.activate(blockState, world, pos, player, hand, hit)) {
-			return true;
+	public ActionResult onUse(BlockState blockState, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		final ActionResult result = super.onUse(blockState, world, pos, player, hand, hit);
+		if (result.isAccepted()) {
+			return result;
 		} else {
 			return trySmelting(blockState, world, pos, player, hand);
 		}
 	}
 
-	protected boolean trySmelting(BlockState blockState, World world, BlockPos pos, PlayerEntity player, Hand hand) {
+	protected ActionResult trySmelting(BlockState blockState, World world, BlockPos pos, PlayerEntity player, Hand hand) {
 		final ItemStack stack = player.getStackInHand(hand);
 
 		if (stack.isEmpty()) {
-			return false;
+			return ActionResult.PASS;
 		}
 
 		final BlockEntity be = world.getBlockEntity(pos);
 
 		if (be == null || !(be instanceof AlchemicalBlockEntity)) {
-			return false;
+			return ActionResult.PASS;
 		}
 
 		final AlchemicalBlockEntity myBe = (AlchemicalBlockEntity) be;
 		final Mode mode = myBe.mode();
 
 		if (mode != Mode.ACTIVE) {
-			return false;
+			return ActionResult.PASS;
 		}
 
 		final Inventory inv = INVENTORY.get();
@@ -112,7 +115,7 @@ public class BrazierBlock extends AlchemicalBlock {
 		final SmeltingRecipe smelt = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, inv, world).orElse(null);
 
 		if (smelt == null) {
-			return false;
+			return ActionResult.PASS;
 		}
 
 		final int currentUnits = myBe.units();
@@ -141,6 +144,6 @@ public class BrazierBlock extends AlchemicalBlock {
 			}
 		}
 
-		return true;
+		return ActionResult.SUCCESS;
 	}
 }

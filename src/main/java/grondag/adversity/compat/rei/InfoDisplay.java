@@ -25,19 +25,20 @@ import java.util.List;
 import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
-
+import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 public class InfoDisplay implements RecipeDisplay {
-	protected final List<List<ItemStack>> inputs;
-	protected final List<ItemStack> output;
+	protected final List<List<EntryStack>> inputs;
+	protected final List<EntryStack> output;
 	protected ItemStack stack;
 
 	public InfoDisplay(ItemStack stack) {
 		this.stack = stack;
-		output = ImmutableList.of(stack);
+		output = ImmutableList.of(EntryStack.create(stack));
 		inputs = ImmutableList.of(output);
 	}
 
@@ -47,17 +48,17 @@ public class InfoDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public List<List<ItemStack>> getInput() {
+	public List<List<EntryStack>> getInputEntries() {
 		return inputs;
 	}
 
 	@Override
-	public List<ItemStack> getOutput() {
+	public List<EntryStack> getOutputEntries() {
 		return output;
 	}
 
 	@Override
-	public List<List<ItemStack>> getRequiredItems() {
+	public List<List<EntryStack>> getRequiredEntries() {
 		return inputs;
 	}
 

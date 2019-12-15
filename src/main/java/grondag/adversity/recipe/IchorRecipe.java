@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import grondag.adversity.registry.AdversityRecipes;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -37,6 +36,8 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+
+import grondag.adversity.registry.AdversityRecipes;
 
 public class IchorRecipe implements Recipe<BasicInventory> {
 	private final List<Ingredient> ingredients;
@@ -79,7 +80,7 @@ public class IchorRecipe implements Recipe<BasicInventory> {
 		for (final Ingredient ingredient : ingredients) {
 			boolean hasIngredient = false;
 			for (final ItemStack potentialIngredient : toCheck) {
-				if (ingredient.method_8093(potentialIngredient)) {
+				if (ingredient.test(potentialIngredient)) {
 					toCheck.remove(potentialIngredient);
 					hasIngredient = true;
 					break;

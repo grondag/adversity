@@ -28,15 +28,9 @@ import static grondag.fermion.position.PackedBlockPos.getZ;
 
 import java.util.Random;
 
-import grondag.adversity.Adversity;
-import grondag.adversity.registry.AdversitySounds;
-import grondag.fermion.position.PackedBlockPos;
-import grondag.fermion.position.PackedBlockPosList;
 import io.netty.buffer.Unpooled;
 import io.netty.util.internal.ThreadLocalRandom;
-import net.fabricmc.fabric.api.network.PacketContext;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-import net.fabricmc.fabric.api.server.PlayerStream;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.particle.ParticleTypes;
@@ -45,6 +39,16 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.world.World;
 
+import net.fabricmc.fabric.api.network.PacketContext;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.server.PlayerStream;
+
+import grondag.adversity.Adversity;
+import grondag.adversity.registry.AdversitySounds;
+import grondag.fermion.position.PackedBlockPos;
+import grondag.fermion.position.PackedBlockPosList;
+
+@SuppressWarnings("deprecation")
 public enum DoomS2C {
 	;
 
@@ -69,12 +73,14 @@ public enum DoomS2C {
 		final Packet<?> packet = ServerSidePacketRegistry.INSTANCE.toPacket(IDENTIFIER, buf);
 
 		PlayerStream.world(world)
-		.filter(p -> reports.isNear(PackedBlockPos.pack(p.x, p.y, p.z), 32))
+		.filter(p -> reports.isNear(PackedBlockPos.pack(p.getX(), p.getY(), p.getZ()), 32))
 		.forEach(p -> ServerSidePacketRegistry.INSTANCE.sendToPlayer(p, packet));
 	}
 
 	public static void handle(PacketContext context, PacketByteBuf buf) {
-		if (context.getPlayer() == null) return;
+		if (context.getPlayer() == null) {
+			return;
+		}
 
 		REPORTS.clear();
 
@@ -108,9 +114,9 @@ public enum DoomS2C {
 				if (getExtra(p) == MIASMA) {
 					world.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat(), y + rand.nextFloat(), z + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 
-					final int dx = (int) player.x - x;
-					final int dy = (int) player.y - y;
-					final int dz = (int) player.z - z;
+					final int dx = (int) player.getX() - x;
+					final int dy = (int) player.getY() - y;
+					final int dz = (int) player.getZ() - z;
 					final float v = 0.8f / (dx * dx + dy * dy + dz * dz);
 
 					if (v > vMax) {

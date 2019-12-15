@@ -23,7 +23,6 @@ package grondag.adversity.block.player;
 
 import java.util.Iterator;
 
-import grondag.adversity.registry.AdversityBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -42,6 +41,8 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.math.Vec3i;
+
+import grondag.adversity.registry.AdversityBlocks;
 
 public class WardedBarrelBlockEntity extends LootableContainerBlockEntity {
 	protected DefaultedList<ItemStack> inventory;
@@ -181,7 +182,7 @@ public class WardedBarrelBlockEntity extends LootableContainerBlockEntity {
 		} else {
 			final BlockState blockState = getCachedState();
 			if (blockState.getBlock() != AdversityBlocks.WARDED_BARREL) {
-				invalidate();
+				markRemoved();
 				return;
 			}
 

@@ -23,10 +23,6 @@ package grondag.adversity.block.player;
 
 import static grondag.adversity.block.player.AlchemicalBlockEntity.MAX_UNITS;
 
-import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
-import grondag.adversity.block.treeheart.DoomTreeTracker;
-import grondag.adversity.registry.AdversityRecipes;
-import grondag.fermion.recipe.AbstractSimpleRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -39,12 +35,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.StateFactory.Builder;
+import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
+import grondag.adversity.block.treeheart.DoomTreeTracker;
+import grondag.adversity.registry.AdversityRecipes;
+import grondag.fermion.recipe.AbstractSimpleRecipe;
 
 public abstract class AlchemicalBlock extends BlockWithEntity {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
@@ -52,13 +54,8 @@ public abstract class AlchemicalBlock extends BlockWithEntity {
 	protected final RecipeType<AbstractSimpleRecipe> recipeType;
 
 	protected AlchemicalBlock(Settings settings, RecipeType<AbstractSimpleRecipe> recipeType) {
-		super(settings);
+		super(settings.nonOpaque());
 		this.recipeType = recipeType;
-	}
-
-	@Override
-	public boolean isOpaque(BlockState blockState) {
-		return false;
 	}
 
 	@Override
@@ -80,17 +77,17 @@ public abstract class AlchemicalBlock extends BlockWithEntity {
 	abstract int fuelValue(Item item);
 
 	@Override
-	public boolean activate(BlockState blockState, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult onUse(BlockState blockState, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		final ItemStack stack = player.getStackInHand(hand);
 
 		if (stack.isEmpty()) {
-			return false;
+			return ActionResult.PASS;
 		}
 
 		final BlockEntity be = world.getBlockEntity(pos);
 
 		if (be == null || !(be instanceof AlchemicalBlockEntity)) {
-			return false;
+			return ActionResult.PASS;
 		}
 
 		final AlchemicalBlockEntity myBe = (AlchemicalBlockEntity) be;
@@ -121,7 +118,7 @@ public abstract class AlchemicalBlock extends BlockWithEntity {
 				}
 			}
 
-			return true;
+			return ActionResult.SUCCESS;
 		}
 
 		if (mode == Mode.ACTIVE) {
@@ -152,13 +149,13 @@ public abstract class AlchemicalBlock extends BlockWithEntity {
 					}
 				}
 
-				return true;
+				return ActionResult.SUCCESS;
 			} else {
-				return handleActiveRecipe(blockState, world, pos, myBe, player, hand, stack, currentUnits);
+				return handleActiveRecipe(blockState, world, pos, myBe, player, hand, stack, currentUnits) ? ActionResult.SUCCESS : ActionResult.PASS;
 			}
 		}
 
-		return false;
+		return ActionResult.PASS;
 	}
 
 	protected boolean handleActiveRecipe(BlockState blockState, World world, BlockPos pos, AlchemicalBlockEntity blockEntity, PlayerEntity player, Hand hand, ItemStack stack, int currentUnits) {

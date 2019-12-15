@@ -21,8 +21,6 @@
  ******************************************************************************/
 package grondag.adversity.block.tree;
 
-import grondag.adversity.block.treeheart.DoomTreeTracker;
-import grondag.adversity.registry.AdversityTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -31,6 +29,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import grondag.adversity.block.treeheart.DoomTreeTracker;
+import grondag.adversity.registry.AdversityTags;
 
 public class DoomLeafBlock extends Block {
 
@@ -64,16 +65,6 @@ public class DoomLeafBlock extends Block {
 
 		return super.calcBlockBreakingDelta(blockState, player, blockView, pos) * progressFactor;
 	}
-
-	@Override
-	public boolean isOpaque(BlockState blockState) {
-		return true;
-	}
-
-	//	@Override
-	//	public BlockRenderLayer getRenderLayer() {
-	//		return BlockRenderLayer.SOLID;
-	//	}
 
 	@Override
 	public boolean canSuffocate(BlockState blockState, BlockView blockView, BlockPos blockPos) {

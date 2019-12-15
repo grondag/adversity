@@ -24,22 +24,25 @@ package grondag.adversity.model;
 import java.util.List;
 import java.util.function.Function;
 
-import grondag.adversity.Adversity;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.util.math.Direction;
+
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+
+import grondag.adversity.AdversityClient;
 
 public class BrazierModel extends AlchemicalModel {
-	public static final List<Identifier> TEXTURES = Adversity.REG.idList(
-		"block/brazier_base",
-		"block/brazier_frame",
-		"block/brazier_inlay",
-		"block/brazier_side",
-		"block/basin_burning_top",
-		"block/brazier_rim");
+	public static final List<SpriteIdentifier> TEXTURES = AdversityClient.REGISTRAR.spriteIdList(SpriteAtlasTexture.BLOCK_ATLAS_TEX,
+			"block/brazier_base",
+			"block/brazier_frame",
+			"block/brazier_inlay",
+			"block/brazier_side",
+			"block/basin_burning_top",
+			"block/brazier_rim");
 
 	protected static final int BASE = 0;
 	protected static final int FRAME = 1;
@@ -50,7 +53,7 @@ public class BrazierModel extends AlchemicalModel {
 
 	public static final int ACTIVE_COLOR = 0xFFFF4040;
 
-	protected BrazierModel(Sprite sprite, Function<Identifier, Sprite> spriteMap, boolean isFrame) {
+	protected BrazierModel(Sprite sprite, Function<SpriteIdentifier, Sprite> spriteMap, boolean isFrame) {
 		super(sprite,spriteMap, TEXTURES, isFrame, ACTIVE_COLOR, PX9);
 	}
 
@@ -157,11 +160,11 @@ public class BrazierModel extends AlchemicalModel {
 		}
 	}
 
-	public static BrazierModel create(Function<Identifier, Sprite> spriteMap) {
+	public static BrazierModel create(Function<SpriteIdentifier, Sprite> spriteMap) {
 		return new BrazierModel(spriteMap.apply(TEXTURES.get(FRAME)), spriteMap, false);
 	}
 
-	public static BrazierModel createFrame(Function<Identifier, Sprite> spriteMap) {
+	public static BrazierModel createFrame(Function<SpriteIdentifier, Sprite> spriteMap) {
 		return new BrazierModel(spriteMap.apply(TEXTURES.get(FRAME)), spriteMap, true);
 	}
 }

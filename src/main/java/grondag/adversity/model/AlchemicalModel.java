@@ -26,13 +26,18 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import grondag.adversity.block.player.AlchemicalBlockEntity;
-import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
-import grondag.adversity.block.player.BasinBlockEntity;
-import grondag.adversity.registry.AdversityFluids;
-import grondag.fermion.client.models.SimpleModel;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockRenderView;
+
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
@@ -41,13 +46,12 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
-import net.minecraft.block.BlockRenderLayer;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.ExtendedBlockView;
+
+import grondag.adversity.block.player.AlchemicalBlockEntity;
+import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
+import grondag.adversity.block.player.BasinBlockEntity;
+import grondag.adversity.registry.AdversityFluids;
+import grondag.fermion.client.models.SimpleModel;
 
 // PERF: uses meshes for static portions of models
 
@@ -68,20 +72,20 @@ public abstract class AlchemicalModel extends SimpleModel {
 	protected static final Direction[] SIDES = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
 
 	protected final Renderer renderer = RendererAccess.INSTANCE.getRenderer();
-	protected final RenderMaterial matCutout = renderer.materialFinder().blendMode(0, BlockRenderLayer.CUTOUT).find();
-	protected final RenderMaterial matSolid = renderer.materialFinder().blendMode(0, BlockRenderLayer.SOLID).find();
-	protected final RenderMaterial matTranslucent = renderer.materialFinder().blendMode(0, BlockRenderLayer.TRANSLUCENT).find();
+	protected final RenderMaterial matCutout = renderer.materialFinder().blendMode(0, BlendMode.CUTOUT).find();
+	protected final RenderMaterial matSolid = renderer.materialFinder().blendMode(0, BlendMode.SOLID).find();
+	protected final RenderMaterial matTranslucent = renderer.materialFinder().blendMode(0, BlendMode.TRANSLUCENT).find();
 
-	protected final RenderMaterial matSolidGlow = renderer.materialFinder().blendMode(0, BlockRenderLayer.SOLID).emissive(0, true)
-		.disableAo(0, true).disableDiffuse(0, true).find();
+	protected final RenderMaterial matSolidGlow = renderer.materialFinder().blendMode(0, BlendMode.SOLID).emissive(0, true)
+			.disableAo(0, true).disableDiffuse(0, true).find();
 
-	protected final RenderMaterial matCutoutGlow = renderer.materialFinder().blendMode(0, BlockRenderLayer.CUTOUT).emissive(0, true)
-		.disableAo(0, true).disableDiffuse(0, true).find();
+	protected final RenderMaterial matCutoutGlow = renderer.materialFinder().blendMode(0, BlendMode.CUTOUT).emissive(0, true)
+			.disableAo(0, true).disableDiffuse(0, true).find();
 
-	protected final RenderMaterial matTranslucentGlow = renderer.materialFinder().blendMode(0, BlockRenderLayer.TRANSLUCENT).emissive(0, true)
-		.disableAo(0, true).disableDiffuse(0, true).find();
+	protected final RenderMaterial matTranslucentGlow = renderer.materialFinder().blendMode(0, BlendMode.TRANSLUCENT).emissive(0, true)
+			.disableAo(0, true).disableDiffuse(0, true).find();
 
-	protected final List<Identifier> textures;
+	protected final List<SpriteIdentifier> textures;
 	protected final Sprite[] sprites;
 	protected final Sprite waterSprite;
 	protected final boolean isFrame;
@@ -93,12 +97,12 @@ public abstract class AlchemicalModel extends SimpleModel {
 	protected final float levelMultiplier;
 
 	public AlchemicalModel(
-		Sprite sprite,
-		Function<Identifier, Sprite> spriteMap,
-		List<Identifier> textures,
-		boolean isFrame,
-		int activeColor,
-		float bottomHeight) {
+			Sprite sprite,
+			Function<SpriteIdentifier, Sprite> spriteMap,
+			List<SpriteIdentifier> textures,
+			boolean isFrame,
+			int activeColor,
+			float bottomHeight) {
 		super(sprite,  ModelHelper.MODEL_TRANSFORM_BLOCK);
 		this.textures = textures;
 		this.isFrame = isFrame;
@@ -112,11 +116,11 @@ public abstract class AlchemicalModel extends SimpleModel {
 			sprites[i] = spriteMap.apply(textures.get(i));
 		}
 
-		waterSprite = spriteMap.apply(new Identifier("minecraft:block/water_still"));
+		waterSprite = spriteMap.apply(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEX, new Identifier("minecraft:block/water_still")));
 	}
 
 	@Override
-	public final void emitBlockQuads(ExtendedBlockView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
+	public final void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
 		final QuadEmitter qe = context.getEmitter();
 		if (isFrame) {
 			emitFrameQuads(qe);
@@ -162,24 +166,24 @@ public abstract class AlchemicalModel extends SimpleModel {
 		final float depth = bottomDepth + levelMultiplier * level;
 		final float height = Math.min(PX13, 1f - depth);
 		final RenderMaterial mat = glow
-			? (hasTranslucentSides() ? matTranslucentGlow : matSolidGlow)
-				: (hasTranslucentSides() ? matTranslucent : matSolid);
+				? (hasTranslucentSides() ? matTranslucentGlow : matSolidGlow)
+						: (hasTranslucentSides() ? matTranslucent : matSolid);
 
-			qe.material(mat)
-			.square(Direction.UP, PX1, PX1, PX15, PX15, depth)
-			.spriteColor(0, color, color, color, color)
-			.spriteBake(0, waterSprite, MutableQuadView.BAKE_LOCK_UV);
-			qe.emit();
+				qe.material(mat)
+				.square(Direction.UP, PX1, PX1, PX15, PX15, depth)
+				.spriteColor(0, color, color, color, color)
+				.spriteBake(0, waterSprite, MutableQuadView.BAKE_LOCK_UV);
+				qe.emit();
 
-			if (hasTranslucentSides()) {
-				for (final Direction face : SIDES) {
-					qe.material(mat)
-					.square(face, PX2, PX4, PX14, height , PX1)
-					.spriteColor(0, color, color, color, color)
-					.spriteBake(0, waterSprite, MutableQuadView.BAKE_LOCK_UV);
-					qe.emit();
+				if (hasTranslucentSides()) {
+					for (final Direction face : SIDES) {
+						qe.material(mat)
+						.square(face, PX2, PX4, PX14, height , PX1)
+						.spriteColor(0, color, color, color, color)
+						.spriteBake(0, waterSprite, MutableQuadView.BAKE_LOCK_UV);
+						qe.emit();
+					}
 				}
-			}
 	}
 
 	protected void renderFluidOverlay(QuadEmitter qe, int level) {

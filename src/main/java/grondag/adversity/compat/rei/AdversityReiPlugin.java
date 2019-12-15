@@ -21,18 +21,22 @@
  ******************************************************************************/
 package grondag.adversity.compat.rei;
 
-import grondag.adversity.Adversity;
-import grondag.adversity.recipe.BasinRecipe;
-import grondag.adversity.recipe.BrazierRecipe;
-import grondag.adversity.registry.AdversityBlocks;
+import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
-import net.fabricmc.loader.api.SemanticVersion;
-import net.fabricmc.loader.util.version.VersionParsingException;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import net.fabricmc.loader.api.SemanticVersion;
+import net.fabricmc.loader.util.version.VersionParsingException;
+
+import grondag.adversity.Adversity;
+import grondag.adversity.recipe.BasinRecipe;
+import grondag.adversity.recipe.BrazierRecipe;
+import grondag.adversity.registry.AdversityBlocks;
 
 public class AdversityReiPlugin implements REIPluginV0 {
 	public static final Identifier ID = Adversity.REG.id("rei_plugin");
@@ -69,12 +73,12 @@ public class AdversityReiPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerOthers(RecipeHelper recipeHelper) {
-		recipeHelper.registerWorkingStations(BRAZIER, new ItemStack(AdversityBlocks.BRAZIER_BLOCK));
-		recipeHelper.registerWorkingStations(BRAZIER_SMELTING, new ItemStack(AdversityBlocks.BRAZIER_BLOCK));
-		recipeHelper.registerWorkingStations(BASIN, new ItemStack(AdversityBlocks.BASIN_BLOCK));
-		recipeHelper.registerWorkingStations(INFO, new ItemStack(AdversityBlocks.DOOM_SAPLING_BLOCK));
+		recipeHelper.registerWorkingStations(BRAZIER, EntryStack.create(AdversityBlocks.BRAZIER_BLOCK));
+		recipeHelper.registerWorkingStations(BRAZIER_SMELTING, EntryStack.create(AdversityBlocks.BRAZIER_BLOCK));
+		recipeHelper.registerWorkingStations(BASIN, EntryStack.create(AdversityBlocks.BASIN_BLOCK));
+		recipeHelper.registerWorkingStations(INFO, EntryStack.create(AdversityBlocks.DOOM_SAPLING_BLOCK));
 
-		recipeHelper.removeSpeedCraftButton(INFO);
+		recipeHelper.removeAutoCraftButton(INFO);
 	}
 
 	@Override

@@ -25,10 +25,10 @@ import java.util.function.Function;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.util.SpriteIdentifier;
 
 public class HeartModel extends TerminalModel {
-	protected HeartModel(Sprite sprite, Function<Identifier, Sprite> spriteMap) {
+	protected HeartModel(Sprite sprite, Function<SpriteIdentifier, Sprite> spriteMap) {
 		super(sprite, spriteMap);
 	}
 
@@ -47,7 +47,7 @@ public class HeartModel extends TerminalModel {
 		return 0xFF000000 | CHANNEL_HIGH_COLOR;
 	}
 
-	public static HeartModel create(Function<Identifier, Sprite> spriteMap) {
+	public static HeartModel create(Function<SpriteIdentifier, Sprite> spriteMap) {
 		return new HeartModel(spriteMap.apply(TERMINAL_TEXTURES.get(0)), spriteMap);
 	}
 }

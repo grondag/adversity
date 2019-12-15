@@ -32,6 +32,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -44,6 +45,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -57,8 +60,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-import net.minecraft.world.loot.context.LootContext;
-import net.minecraft.world.loot.context.LootContextParameters;
 
 public class Explodinator extends Explosion {
 
@@ -152,14 +153,14 @@ public class Explodinator extends Explosion {
 	}
 
 	public Explodinator prepare(World world,
-		@Nullable Entity entity,
-		double x,
-		double y,
-		double z,
-		float power,
-		boolean playerFire,
-		boolean blockFire,
-		Explosion.DestructionType destructionType)
+			@Nullable Entity entity,
+			double x,
+			double y,
+			double z,
+			float power,
+			boolean playerFire,
+			boolean blockFire,
+			Explosion.DestructionType destructionType)
 	{
 		this.world = world;
 		this.entity = entity;
@@ -180,9 +181,9 @@ public class Explodinator extends Explosion {
 	}
 
 	public Explodinator setParticles(
-		@Nullable ExplosionFX fx,
-		@Nullable DefaultParticleType smokeParticle,
-		@Nullable DefaultParticleType poofParticle) {
+			@Nullable ExplosionFX fx,
+			@Nullable DefaultParticleType smokeParticle,
+			@Nullable DefaultParticleType poofParticle) {
 
 		this.fx =  fx;
 		this.smokeParticle =  smokeParticle;
@@ -261,9 +262,9 @@ public class Explodinator extends Explosion {
 				final double distSq = MathHelper.sqrt(victim.squaredDistanceTo(new Vec3d(x, y, z))) / radius;
 
 				if (distSq <= 1.0D) {
-					double dx = victim.x - x;
-					double dy = victim.y + victim.getStandingEyeHeight() - y;
-					double dz = victim.z - z;
+					double dx = victim.getX() - x;
+					double dy = victim.getY() + victim.getStandingEyeHeight() - y;
+					double dz = victim.getZ() - z;
 					final double dist = MathHelper.sqrt(dx * dx + dy * dy + dz * dz);
 
 					if (dist != 0.0D) {
@@ -356,12 +357,14 @@ public class Explodinator extends Explosion {
 							lootContext.put(LootContextParameters.EXPLOSION_RADIUS, power);
 						}
 
-						Block.dropStacks(blockState, lootContext);
+						blockState.getBlock().getDroppedStacks(blockState, lootContext).forEach((itemStack) -> {
+							Block.dropStack(world, pos, itemStack);
+						});
 					}
-
-					world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
-					block.onDestroyedByExplosion(world, pos, this);
 				}
+
+				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+				block.onDestroyedByExplosion(world, pos, this);
 			}
 		}
 

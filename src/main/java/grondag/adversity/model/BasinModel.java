@@ -24,26 +24,29 @@ package grondag.adversity.model;
 import java.util.List;
 import java.util.function.Function;
 
-import grondag.adversity.Adversity;
-import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
 
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+
+import grondag.adversity.AdversityClient;
+
 public class BasinModel extends AlchemicalModel {
-	public static final List<Identifier> TEXTURES = Adversity.REG.idList(
-		"block/basin_base",
-		"block/basin_feet",
-		"block/basin_glass",
-		"block/basin_inlay_a",
-		"block/basin_inlay_b",
-		"block/inert_basin_inlay_a",
-		"block/inert_basin_inlay_b",
-		"block/basin_side",
-		"block/basin_rim");
+	public static final List<SpriteIdentifier> TEXTURES = AdversityClient.REGISTRAR.spriteIdList(SpriteAtlasTexture.BLOCK_ATLAS_TEX,
+			"block/basin_base",
+			"block/basin_feet",
+			"block/basin_glass",
+			"block/basin_inlay_a",
+			"block/basin_inlay_b",
+			"block/inert_basin_inlay_a",
+			"block/inert_basin_inlay_b",
+			"block/basin_side",
+			"block/basin_rim");
 
 	protected static final int BASE = 0;
 	protected static final int FEET = 1;
@@ -57,7 +60,7 @@ public class BasinModel extends AlchemicalModel {
 
 	public static final int ACTIVE_COLOR = 0xFF80B0FF;
 
-	protected BasinModel(Sprite sprite, Function<Identifier, Sprite> spriteMap, boolean isFrame) {
+	protected BasinModel(Sprite sprite, Function<SpriteIdentifier, Sprite> spriteMap, boolean isFrame) {
 		super(sprite,spriteMap, TEXTURES, isFrame, ACTIVE_COLOR, PX3);
 	}
 
@@ -177,11 +180,11 @@ public class BasinModel extends AlchemicalModel {
 		qe.emit();
 	}
 
-	public static BasinModel create(Function<Identifier, Sprite> spriteMap) {
+	public static BasinModel create(Function<SpriteIdentifier, Sprite> spriteMap) {
 		return new BasinModel(spriteMap.apply(TEXTURES.get(INERT_A)), spriteMap, false);
 	}
 
-	public static BasinModel createFrame(Function<Identifier, Sprite> spriteMap) {
+	public static BasinModel createFrame(Function<SpriteIdentifier, Sprite> spriteMap) {
 		return new BasinModel(spriteMap.apply(TEXTURES.get(INERT_A)), spriteMap, true);
 	}
 }

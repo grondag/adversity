@@ -21,19 +21,21 @@
  ******************************************************************************/
 package grondag.adversity.block.tree;
 
-import grondag.adversity.block.treeheart.DoomTreeTracker;
-import grondag.adversity.registry.AdversityTags;
-import net.fabricmc.fabric.api.tools.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateFactory.Builder;
+import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import net.fabricmc.fabric.api.tools.FabricToolTags;
+
+import grondag.adversity.block.treeheart.DoomTreeTracker;
+import grondag.adversity.registry.AdversityTags;
 
 public class DoomLogBlock extends Block {
 	public static final int MAX_HEIGHT = 20;

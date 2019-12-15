@@ -26,17 +26,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.math.api.Point;
 import me.shedaniel.math.api.Rectangle;
-import me.shedaniel.math.compat.RenderHelper;
 import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.Renderer;
+import me.shedaniel.rei.gui.widget.EntryWidget;
 import me.shedaniel.rei.gui.widget.RecipeBaseWidget;
-import me.shedaniel.rei.gui.widget.SlotWidget;
 import me.shedaniel.rei.gui.widget.Widget;
 import me.shedaniel.rei.plugin.DefaultPlugin;
+
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.render.DiffuseLighting;
 
 public abstract class AlchemicalCategory<T extends AlchemicalDisplay<?>> implements RecipeCategory<T> {
 	@Override
@@ -46,14 +46,14 @@ public abstract class AlchemicalCategory<T extends AlchemicalDisplay<?>> impleme
 			@Override
 			public void render(int mouseX, int mouseY, float delta) {
 				super.render(mouseX, mouseY, delta);
-				RenderHelper.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GuiLighting.disable();
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				DiffuseLighting.disable();
 				MinecraftClient.getInstance().getTextureManager().bindTexture(DefaultPlugin.getDisplayTexture());
 				blit(startPoint.x, startPoint.y, 0, 221, 82, 26);
 			}
 		}));
-		widgets.add(new SlotWidget(startPoint.x + 4, startPoint.y + 5, Renderer.fromItemStacks(recipeDisplaySupplier.get().getInput().get(0)), true, true, true));
-		widgets.add(new SlotWidget(startPoint.x + 61, startPoint.y + 5, Renderer.fromItemStacks(recipeDisplaySupplier.get().getOutput()), false, true, true));
+		widgets.add(EntryWidget.create(startPoint.x + 4, startPoint.y + 5).entries(recipeDisplaySupplier.get().getInputEntries().get(0)).noBackground());
+		widgets.add(EntryWidget.create(startPoint.x + 61, startPoint.y + 5).entry(recipeDisplaySupplier.get().getOutputEntries().get(0)).noBackground());
 		return widgets;
 	}
 

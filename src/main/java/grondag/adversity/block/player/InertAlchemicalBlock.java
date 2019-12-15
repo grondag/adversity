@@ -23,9 +23,6 @@ package grondag.adversity.block.player;
 
 import static grondag.adversity.block.player.AlchemicalBlockEntity.MAX_UNITS;
 
-import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
-import grondag.adversity.registry.AdversityItems;
-import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -37,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -44,17 +42,17 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import net.fabricmc.fabric.api.block.FabricBlockSettings;
+
+import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
+import grondag.adversity.registry.AdversityItems;
+
 public class InertAlchemicalBlock extends Block {
 	final AlchemicalBlock baseBlock;
 
 	public InertAlchemicalBlock(AlchemicalBlock baseBlock) {
-		super(FabricBlockSettings.copy(baseBlock).build());
+		super(FabricBlockSettings.copy(baseBlock).nonOpaque().build());
 		this.baseBlock = baseBlock;
-	}
-
-	@Override
-	public boolean isOpaque(BlockState blockState) {
-		return false;
 	}
 
 	@Override
@@ -73,11 +71,11 @@ public class InertAlchemicalBlock extends Block {
 	}
 
 	@Override
-	public boolean activate(BlockState blockState, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult onUse(BlockState blockState, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		final ItemStack stack = player.getStackInHand(hand);
 
 		if (stack.isEmpty()) {
-			return true;
+			return ActionResult.SUCCESS;
 		}
 
 		final Item item = stack.getItem();
@@ -98,9 +96,9 @@ public class InertAlchemicalBlock extends Block {
 				world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
-			return true;
+			return ActionResult.SUCCESS;
 		} else {
-			return false;
+			return ActionResult.PASS;
 		}
 	}
 }

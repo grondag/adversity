@@ -24,15 +24,17 @@ package grondag.adversity.item;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import grondag.adversity.entity.DoomEffect;
-import grondag.adversity.registry.AdversityEffects;
-import grondag.fermion.entity.StatusEffectAccess;
 import it.unimi.dsi.fastutil.HashCommon;
+
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import grondag.adversity.entity.DoomEffect;
+import grondag.adversity.registry.AdversityEffects;
+import grondag.fermion.entity.StatusEffectAccess;
 
 public class SalvationPotion extends MilkPotion {
 	public SalvationPotion(final Settings settings) {
@@ -45,22 +47,24 @@ public class SalvationPotion extends MilkPotion {
 
 		if (doom == null) {
 			final List<StatusEffectInstance> candidates = player.getStatusEffects()
-				.stream()
-				.filter(e -> !AdversityEffects.isImmuneToMilk(e.getEffectType()) && e.getEffectType().getType() == StatusEffectType.HARMFUL)
-				.collect(Collectors.toList());
+					.stream()
+					.filter(e -> !AdversityEffects.isImmuneToMilk(e.getEffectType()) && e.getEffectType().getType() == StatusEffectType.HARMFUL)
+					.collect(Collectors.toList());
 
-			if (candidates.isEmpty()) return;
+			if (candidates.isEmpty()) {
+				return;
+			}
 
 			final int size = candidates.size();
 
-			player.removePotionEffect(candidates.get(HashCommon.mix(size) % size).getEffectType());
+			player.removeStatusEffect(candidates.get(HashCommon.mix(size) % size).getEffectType());
 			return;
 		}
 
 		final int aOld = doom.getAmplifier();
 
 		if (aOld <= 1) {
-			player.removePotionEffect(AdversityEffects.DOOM_EFFECT);
+			player.removeStatusEffect(AdversityEffects.DOOM_EFFECT);
 			return;
 		}
 

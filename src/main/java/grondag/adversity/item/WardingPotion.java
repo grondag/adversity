@@ -21,13 +21,14 @@
  ******************************************************************************/
 package grondag.adversity.item;
 
-import grondag.adversity.entity.WardingEffect;
-import grondag.adversity.registry.AdversityEffects;
-import grondag.fermion.entity.StatusEffectAccess;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import grondag.adversity.entity.WardingEffect;
+import grondag.adversity.registry.AdversityEffects;
+import grondag.fermion.entity.StatusEffectAccess;
 
 public class WardingPotion extends AbstractPotion {
 	public WardingPotion(final Settings settings) {
@@ -40,7 +41,7 @@ public class WardingPotion extends AbstractPotion {
 
 		if (warding == null) {
 			if (!world.isClient) {
-				player.addPotionEffect(new StatusEffectInstance(AdversityEffects.WARDING_EFFECT, WardingEffect.TICKS_PER_LEVEL, 0, false, false, true));
+				player.addStatusEffect(new StatusEffectInstance(AdversityEffects.WARDING_EFFECT, WardingEffect.TICKS_PER_LEVEL, 0, false, false, true));
 			}
 		} else {
 			StatusEffectAccess.access(warding).fermion_addDuration(Math.min(WardingEffect.TICKS_PER_LEVEL, WardingEffect.MAX_TICKS - warding.getDuration()));

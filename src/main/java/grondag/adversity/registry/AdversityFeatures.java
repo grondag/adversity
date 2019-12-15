@@ -23,7 +23,6 @@ package grondag.adversity.registry;
 
 import static grondag.adversity.Adversity.REG;
 
-import grondag.adversity.block.tree.ForebodingShrubFeature;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
@@ -32,6 +31,8 @@ import net.minecraft.world.gen.decorator.CountChanceDecoratorConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+
+import grondag.adversity.block.tree.ForebodingShrubFeature;
 
 public enum AdversityFeatures {
 	;
@@ -52,6 +53,6 @@ public enum AdversityFeatures {
 	}
 
 	static void addShrub(Biome target) {
-		target.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Biome.configureFeature(FOREBODING_SHRUB, new DefaultFeatureConfig(), Decorator.COUNT_CHANCE_HEIGHTMAP, new CountChanceDecoratorConfig(1, 0.1F)));
+		target.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, FOREBODING_SHRUB.configure(new DefaultFeatureConfig()).createDecoratedFeature(Decorator.COUNT_CHANCE_HEIGHTMAP.configure(new CountChanceDecoratorConfig(1, 0.1F))));
 	}
 }

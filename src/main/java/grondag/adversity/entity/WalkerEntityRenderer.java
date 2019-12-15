@@ -21,15 +21,13 @@
  ******************************************************************************/
 package grondag.adversity.entity;
 
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
-
-import grondag.adversity.AdversityClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+
+import grondag.adversity.AdversityClient;
 
 public class WalkerEntityRenderer extends MobEntityRenderer<WalkerEntity, WalkerEntityModel> {
 	private static final Identifier SKIN = AdversityClient.REGISTRAR.id("textures/entity/walker.png");
@@ -40,30 +38,12 @@ public class WalkerEntityRenderer extends MobEntityRenderer<WalkerEntity, Walker
 	}
 
 	@Override
-	protected Identifier getTexture(WalkerEntity entity) {
+	public Identifier getTexture(WalkerEntity entity) {
 		return SKIN;
 	}
 
 	@Override
-	public void render(WalkerEntity walker, double x, double y, double z, float float_1, float float_2) {
-		final int int_2 = 0xF00F0 % 65536;
-		final int int_3 = 0xF00F0 / 65536;
-		GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, int_2, int_3);
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		final GameRenderer gameRenderer = MinecraftClient.getInstance().gameRenderer;
-		gameRenderer.setFogBlack(true);
-		GlStateManager.disableLighting();
-
-		//		final int pulseCount = walker.pulseCount();
-		//
-		//		if (pulseCount > 0) {
-		//			final double f = 0.002 * pulseCount;
-		//			x += random.nextGaussian() * f;
-		//			y += random.nextGaussian() * f;
-		//			z += random.nextGaussian() * f;
-		//		}
-
-		super.render(walker, x, y, z, float_1, float_2);
-
+	public void render(WalkerEntity walker, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+		super.render(walker, f, g, matrixStack, vertexConsumerProvider, 0xF00F00);
 	}
 }

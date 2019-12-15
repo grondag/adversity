@@ -23,17 +23,19 @@ package grondag.adversity.block.treeheart;
 
 import java.util.Random;
 
-import grondag.adversity.block.tree.DoomLogBlock;
-import grondag.adversity.registry.AdversityBlockStates;
-import grondag.adversity.registry.AdversityBlocks;
 import io.netty.util.internal.ThreadLocalRandom;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntHeapPriorityQueue;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+
+import grondag.adversity.block.tree.DoomLogBlock;
+import grondag.adversity.registry.AdversityBlockStates;
+import grondag.adversity.registry.AdversityBlocks;
 
 /** Tracks log spaces needing placement */
 @SuppressWarnings("serial")
@@ -67,7 +69,9 @@ class BranchBuilder extends IntHeapPriorityQueue {
 	}
 
 	void build(DoomHeartBlockEntity heart) {
-		if (isEmpty()) return;
+		if (isEmpty()) {
+			return;
+		}
 
 		final int start = dequeueInt();
 		final World world = heart.getWorld();
@@ -108,7 +112,9 @@ class BranchBuilder extends IntHeapPriorityQueue {
 		addCandidate(world, mPos, logs, startPos, rx - 1, ry, rz, candidates);
 		addCandidate(world, mPos, logs, startPos, rx + 1, ry, rz, candidates);
 
-		if (candidates.isEmpty()) return;
+		if (candidates.isEmpty()) {
+			return;
+		}
 
 		final int first = candidates.removeInt(rand.nextInt(candidates.size()));
 		final int second = candidates.isEmpty() || rand.nextInt(12) != 0 ? -1 : candidates.removeInt(rand.nextInt(candidates.size()));
@@ -142,7 +148,7 @@ class BranchBuilder extends IntHeapPriorityQueue {
 		final BlockState underState = world.getBlockState(mPos.setOffset(Direction.DOWN));
 
 		if(underState != AdversityBlockStates.MIASMA_STATE && underState != AdversityBlockStates.GLEAM_STATE
-			&& (underState == AdversityBlockStates.LEAF_STATE || underState.isAir() || TreeUtils.canReplace(underState))) {
+				&& (underState == AdversityBlockStates.LEAF_STATE || underState.isAir() || TreeUtils.canReplace(underState))) {
 
 			world.setBlockState(mPos, AdversityBlockStates.MIASMA_STATE);
 		}
@@ -153,19 +159,31 @@ class BranchBuilder extends IntHeapPriorityQueue {
 
 		final int rsq = TreeUtils.canopyRadiusSquared(y);
 
-		if (x * x + z * z > rsq) return;
+		if (x * x + z * z > rsq) {
+			return;
+		}
 
-		if (!isOutgoing(startPos, x, y, z)) return;
+		if (!isOutgoing(startPos, x, y, z)) {
+			return;
+		}
 
-		if (logs.contains(p)) return;
+		if (logs.contains(p)) {
+			return;
+		}
 
-		if (isCrowded(logs, startPos, x, y, z)) return;
+		if (isCrowded(logs, startPos, x, y, z)) {
+			return;
+		}
 
 		mPos.set(originX + x, originY + y, originZ + z);
 
-		if (!World.isValid(mPos) || !world.isBlockLoaded(mPos)) return;
+		if (!World.isValid(mPos) || !world.isChunkLoaded(mPos)) {
+			return;
+		}
 
-		if (!TreeUtils.canReplace(world, mPos)) return;
+		if (!TreeUtils.canReplace(world, mPos)) {
+			return;
+		}
 
 		candidates.add(p);
 	}
@@ -185,21 +203,45 @@ class BranchBuilder extends IntHeapPriorityQueue {
 	}
 
 	private static boolean isCrowded(LogTracker logs, int startPos, int x, int y, int z) {
-		if (isCrowding(logs, startPos, x-1, y, z-1)) return true;
-		if (isCrowding(logs, startPos, x-1, y, z)) return true;
-		if (isCrowding(logs, startPos, x-1, y, z+1)) return true;
+		if (isCrowding(logs, startPos, x-1, y, z-1)) {
+			return true;
+		}
+		if (isCrowding(logs, startPos, x-1, y, z)) {
+			return true;
+		}
+		if (isCrowding(logs, startPos, x-1, y, z+1)) {
+			return true;
+		}
 
-		if (isCrowding(logs, startPos, x, y, z-1)) return true;
-		if (isCrowding(logs, startPos, x, y, z+1)) return true;
+		if (isCrowding(logs, startPos, x, y, z-1)) {
+			return true;
+		}
+		if (isCrowding(logs, startPos, x, y, z+1)) {
+			return true;
+		}
 
-		if (isCrowding(logs, startPos, x+1, y, z-1)) return true;
-		if (isCrowding(logs, startPos, x+1, y, z)) return true;
-		if (isCrowding(logs, startPos, x+1, y, z+1)) return true;
+		if (isCrowding(logs, startPos, x+1, y, z-1)) {
+			return true;
+		}
+		if (isCrowding(logs, startPos, x+1, y, z)) {
+			return true;
+		}
+		if (isCrowding(logs, startPos, x+1, y, z+1)) {
+			return true;
+		}
 
-		if (isCrowding(logs, startPos, x-2, y, z)) return true;
-		if (isCrowding(logs, startPos, x+2, y, z)) return true;
-		if (isCrowding(logs, startPos, x, y, z-2)) return true;
-		if (isCrowding(logs, startPos, x, y, z+2)) return true;
+		if (isCrowding(logs, startPos, x-2, y, z)) {
+			return true;
+		}
+		if (isCrowding(logs, startPos, x+2, y, z)) {
+			return true;
+		}
+		if (isCrowding(logs, startPos, x, y, z-2)) {
+			return true;
+		}
+		if (isCrowding(logs, startPos, x, y, z+2)) {
+			return true;
+		}
 
 		return false;
 	}

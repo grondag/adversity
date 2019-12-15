@@ -21,11 +21,6 @@
  ******************************************************************************/
 package grondag.adversity.ichor;
 
-import grondag.adversity.registry.AdversityBlocks;
-import grondag.adversity.registry.AdversityFluids;
-import grondag.adversity.registry.AdversityItems;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
@@ -34,7 +29,14 @@ import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import grondag.adversity.registry.AdversityBlocks;
+import grondag.adversity.registry.AdversityFluids;
+import grondag.adversity.registry.AdversityItems;
 
 public abstract class IchorFluid extends WaterFluid {
 	@Override
@@ -75,7 +77,7 @@ public abstract class IchorFluid extends WaterFluid {
 
 	public static class Flowing extends IchorFluid {
 		@Override
-		protected void appendProperties(StateFactory.Builder<Fluid, FluidState> stateBuilder) {
+		protected void appendProperties(StateManager.Builder<Fluid, FluidState> stateBuilder) {
 			super.appendProperties(stateBuilder);
 			stateBuilder.add(LEVEL);
 		}

@@ -21,8 +21,17 @@
  ******************************************************************************/
 package grondag.adversity;
 
-import grondag.adversity.block.player.WardedWoodSignBlockEntity;
-import grondag.adversity.entity.WalkerEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+
 import grondag.adversity.entity.WalkerEntityRenderer;
 import grondag.adversity.entity.WardingEffect;
 import grondag.adversity.model.BasinModel;
@@ -43,6 +52,8 @@ import grondag.adversity.particle.WakingParticle.WakingParticleFactory;
 import grondag.adversity.particle.WalkerPulseParticle.WalkerExplosionParticleFactory;
 import grondag.adversity.particle.WalkerPulseParticle.WalkerPulseParticleFactory;
 import grondag.adversity.particle.WardedFlameParticle;
+import grondag.adversity.registry.AdversityBlocks;
+import grondag.adversity.registry.AdversityEntities;
 import grondag.adversity.registry.AdversityFluids;
 import grondag.adversity.registry.AdversityItems;
 import grondag.adversity.registry.AdversityParticles;
@@ -50,16 +61,6 @@ import grondag.adversity.render.DoomEffectRender;
 import grondag.fermion.block.sign.OpenSignRenderer;
 import grondag.fermion.client.ClientRegistrar;
 import grondag.fermion.client.models.SimpleUnbakedModel;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
-import net.fabricmc.fabric.api.client.render.EntityRendererRegistry;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.entity.model.SignBlockEntityModel;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 
 public class AdversityClient implements ClientModInitializer {
 	public static final ClientRegistrar REGISTRAR = new ClientRegistrar(Adversity.MOD_ID);
@@ -90,9 +91,9 @@ public class AdversityClient implements ClientModInitializer {
 
 		REGISTRAR.modelVariant("doom_heart", new SimpleUnbakedModel(HeartModel::create, HeartModel.TERMINAL_TEXTURES));
 
-		REGISTRAR.simpleRandomModel("doom_leaves", "block/doom_leaves_0_0", "block/doom_leaves_0_1", "block/doom_leaves_0_2", "block/doom_leaves_0_3");
-		REGISTRAR.simpleRandomModel("doomed_residue_block", "block/doomed_residue_block");
-		REGISTRAR.simpleRandomModel("warding_essence_block", "block/warding_essence_block");
+		REGISTRAR.simpleRandomModel("doom_leaves", SpriteAtlasTexture.BLOCK_ATLAS_TEX, "block/doom_leaves_0_0", "block/doom_leaves_0_1", "block/doom_leaves_0_2", "block/doom_leaves_0_3");
+		REGISTRAR.simpleRandomModel("doomed_residue_block", SpriteAtlasTexture.BLOCK_ATLAS_TEX, "block/doomed_residue_block");
+		REGISTRAR.simpleRandomModel("warding_essence_block", SpriteAtlasTexture.BLOCK_ATLAS_TEX, "block/warding_essence_block");
 
 		ClientSidePacketRegistry.INSTANCE.register(AlchemyCraftS2C.IDENTIFIER, AlchemyCraftS2C::handle);
 		ClientSidePacketRegistry.INSTANCE.register(DoomS2C.IDENTIFIER, DoomS2C::handle);
@@ -117,7 +118,8 @@ public class AdversityClient implements ClientModInitializer {
 			}
 		});
 
-		BlockEntityRendererRegistry.INSTANCE.register(WardedWoodSignBlockEntity.class, new OpenSignRenderer(REGISTRAR.id("textures/entity/warded_wood_sign.png"), new SignBlockEntityModel()));
+		// TODO: nned a way to get texture to the sign: REGISTRAR.id("textures/entity/warded_wood_sign.png")
+		BlockEntityRendererRegistry.INSTANCE.register(AdversityBlocks.WARDED_WOOD_SIGN_BLOCK_ENTITY, d -> new OpenSignRenderer(d));
 		//BlockEntityRendererRegistry.INSTANCE.register(DoomSaplingBlockEntity.class, new DoomSaplingBlockEntityRenderer());
 
 		DoomEffectRender.init(REGISTRAR);
@@ -126,7 +128,7 @@ public class AdversityClient implements ClientModInitializer {
 		ColorProviderRegistry.ITEM.register((s, i) -> 0xFFFFFFFF, AdversityItems.MILK_POTION);
 		ColorProviderRegistry.ITEM.register((s, i) -> 0xFFB6D8FF, AdversityItems.SALVATION_POTION);
 
-		EntityRendererRegistry.INSTANCE.register(WalkerEntity.class, (dispatcher, context) -> new WalkerEntityRenderer(dispatcher));
+		EntityRendererRegistry.INSTANCE.register(AdversityEntities.WALKER, (dispatcher, context) -> new WalkerEntityRenderer(dispatcher));
 
 		Adversity.PLAYER_PROXY = () -> MinecraftClient.getInstance().player;
 	}

@@ -23,18 +23,11 @@ package grondag.adversity.block.treeheart;
 
 import java.util.ArrayList;
 
-import grondag.adversity.entity.DoomEffect;
-import grondag.adversity.packet.DoomS2C;
-import grondag.adversity.registry.AdversityBlockStates;
-import grondag.adversity.registry.AdversityBlocks;
-import grondag.adversity.registry.AdversityEffects;
-import grondag.adversity.registry.AdversityTags;
-import grondag.fermion.position.PackedBlockPos;
-import grondag.fermion.position.PackedBlockPosList;
 import it.unimi.dsi.fastutil.HashCommon;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntHeapPriorityQueue;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -52,7 +45,16 @@ import net.minecraft.world.GameRules.BooleanRule;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
-@SuppressWarnings("serial")
+import grondag.adversity.entity.DoomEffect;
+import grondag.adversity.packet.DoomS2C;
+import grondag.adversity.registry.AdversityBlockStates;
+import grondag.adversity.registry.AdversityBlocks;
+import grondag.adversity.registry.AdversityEffects;
+import grondag.adversity.registry.AdversityTags;
+import grondag.fermion.position.PackedBlockPos;
+import grondag.fermion.position.PackedBlockPosList;
+
+@SuppressWarnings({ "serial", "deprecation" })
 class Troll extends IntHeapPriorityQueue {
 	private static final int MAX_INDEX;
 	private static final int[] OFFSETS;
@@ -163,7 +165,7 @@ class Troll extends IntHeapPriorityQueue {
 		final WorldChunk chunk  = world.getWorldChunk(mPos.set(px, y, pz));
 
 		if (chunk != null) {
-			chunk.appendEntities((Entity)null, new Box(px, y, pz, px + 1, y + 16, pz + 1), targets, e -> DoomEffect.canDoom(e));
+			chunk.getEntities((Entity)null, new Box(px, y, pz, px + 1, y + 16, pz + 1), targets, e -> DoomEffect.canDoom(e));
 		}
 
 		doDamage(world);
@@ -196,7 +198,7 @@ class Troll extends IntHeapPriorityQueue {
 	private boolean trollBlock(World world, BlockPos.Mutable mPos, DoomHeartBlockEntity heart, int pos) {
 		RelativePos.set(mPos, originX, originY, originZ, pos);
 
-		if (!World.isValid(mPos) || !world.isBlockLoaded(mPos)) {
+		if (!World.isValid(mPos) || !world.isChunkLoaded(mPos)) {
 			return false;
 		}
 
@@ -209,7 +211,9 @@ class Troll extends IntHeapPriorityQueue {
 
 		final BlockState trollState = Troll.trollState(world, currentState, mPos);
 
-		if (trollState == null || trollState == currentState) return false;
+		if (trollState == null || trollState == currentState) {
+			return false;
+		}
 
 		final Block newBlock = trollState.getBlock();
 
@@ -235,19 +239,25 @@ class Troll extends IntHeapPriorityQueue {
 	}
 
 	void doDamage(World world) {
-		if (targets.isEmpty()) return;
+		if (targets.isEmpty()) {
+			return;
+		}
 
 		final BooleanRule lootRule = world.getGameRules().get(GameRules.DO_MOB_LOOT);
 		final boolean loot = lootRule.get();
 
-		if (loot) lootRule.set(false, null);
+		if (loot) {
+			lootRule.set(false, null);
+		}
 
 		for (final Entity e : targets) {
 			//FEAT: collect energy
 			harvestEntity((LivingEntity) e);
 		}
 
-		if (loot) lootRule.set(true, null);
+		if (loot) {
+			lootRule.set(true, null);
+		}
 	}
 
 	/**
@@ -256,7 +266,7 @@ class Troll extends IntHeapPriorityQueue {
 	 * Returns hearts harvested.
 	 */
 	public static float harvestEntity(LivingEntity e) {
-		final float damage = e.getHealthMaximum() * (1 - DoomEffect.doomResistance(e));
+		final float damage = e.getMaximumHealth() * (1 - DoomEffect.doomResistance(e));
 
 		if (damage > 0.1f) {
 			e.damage(AdversityEffects.DOOM, damage);
@@ -317,15 +327,16 @@ class Troll extends IntHeapPriorityQueue {
 		if (TreeUtils.canReplace(fromState)) {
 			if (block.matches(BlockTags.LOGS) && fromState.contains(PillarBlock.AXIS)) {
 				return AdversityBlockStates.DOOMED_LOG_STATE.with(PillarBlock.AXIS, fromState.get(PillarBlock.AXIS));
-			} else if (block.matches(BlockTags.DIRT_LIKE)) {
-				return AdversityBlockStates.DOOMED_EARTH_STATE;
 			} else if (block.isFullOpaque(fromState, world, pos)) {
 				if (material == Material.STONE) {
 					return AdversityBlockStates.DOOMED_STONE_STATE;
+				} else if (material == Material.EARTH) {
+					return AdversityBlockStates.DOOMED_EARTH_STATE;
 				} else {
 					return AdversityBlockStates.DOOMED_DUST_STATE;
 				}
 			}
+
 			return AdversityBlockStates.MIASMA_STATE;
 		}
 

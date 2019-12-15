@@ -22,16 +22,18 @@
 package grondag.adversity.registry;
 
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
+
+import net.minecraft.loot.ConstantLootTableRange;
+import net.minecraft.loot.LootManager;
+import net.minecraft.loot.LootTables;
+import net.minecraft.loot.condition.RandomChanceLootCondition;
+import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
+
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.FabricLootSupplierBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback.LootTableSetter;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.loot.ConstantLootTableRange;
-import net.minecraft.world.loot.LootManager;
-import net.minecraft.world.loot.LootTables;
-import net.minecraft.world.loot.condition.RandomChanceLootCondition;
-import net.minecraft.world.loot.entry.ItemEntry;
 
 public enum AdversityLoot {
 	;
@@ -62,9 +64,9 @@ public enum AdversityLoot {
 	public static void init(ResourceManager resourceManager, LootManager manager, Identifier id, FabricLootSupplierBuilder supplier, LootTableSetter setter) {
 		if (CHEST_TARGETS.containsKey(id)) {
 			final FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-				.withRolls(ConstantLootTableRange.create(1))
-				.withCondition(RandomChanceLootCondition.builder(CHEST_TARGETS.getFloat(id)).build())
-				.withEntry(ItemEntry.builder(AdversityItems.ALCHEMICAL_ENGINE));
+					.withRolls(ConstantLootTableRange.create(1))
+					.withCondition(RandomChanceLootCondition.builder(CHEST_TARGETS.getFloat(id)).build())
+					.withEntry(ItemEntry.builder(AdversityItems.ALCHEMICAL_ENGINE));
 			supplier.withPool(poolBuilder);
 		}
 	}

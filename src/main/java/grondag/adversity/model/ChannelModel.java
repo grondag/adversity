@@ -24,25 +24,28 @@ package grondag.adversity.model;
 import java.util.List;
 import java.util.function.Function;
 
-import grondag.adversity.Adversity;
-import grondag.fermion.client.models.SimpleModels;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.util.math.Direction;
+
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+
+import grondag.adversity.AdversityClient;
+import grondag.fermion.client.models.SimpleModels;
 
 public class ChannelModel extends LogModel {
 
-	public static final List<Identifier> CHANNEL_TEXTURES = Adversity.REG.idList(
-		"block/doom_log_channel_0_0",
-		"block/doom_log_channel_0_1",
-		"block/doom_log_channel_0_2",
-		"block/doom_log_channel_0_3");
+	public static final List<SpriteIdentifier> CHANNEL_TEXTURES = AdversityClient.REGISTRAR.spriteIdList(SpriteAtlasTexture.BLOCK_ATLAS_TEX,
+			"block/doom_log_channel_0_0",
+			"block/doom_log_channel_0_1",
+			"block/doom_log_channel_0_2",
+			"block/doom_log_channel_0_3");
 
 	protected final Sprite[] channelSprite = new Sprite[4];
 
-	protected ChannelModel(Sprite sprite, Function<Identifier, Sprite> spriteMap) {
+	protected ChannelModel(Sprite sprite, Function<SpriteIdentifier, Sprite> spriteMap) {
 		super(sprite, spriteMap);
 		for (int i = 0; i < 4; i++) {
 			channelSprite[i] = spriteMap.apply(CHANNEL_TEXTURES.get(i));
@@ -65,7 +68,7 @@ public class ChannelModel extends LogModel {
 		qe.emit();
 	}
 
-	public static ChannelModel create(Function<Identifier, Sprite> spriteMap) {
+	public static ChannelModel create(Function<SpriteIdentifier, Sprite> spriteMap) {
 		return new ChannelModel(spriteMap.apply(CHANNEL_TEXTURES.get(0)), spriteMap);
 	}
 }

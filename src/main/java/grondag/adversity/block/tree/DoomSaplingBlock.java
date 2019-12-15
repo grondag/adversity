@@ -22,7 +22,6 @@
 package grondag.adversity.block.tree;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -45,11 +44,6 @@ public class DoomSaplingBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.SOLID;
-	}
-
-	@Override
 	public BlockRenderType getRenderType(BlockState blockState_1) {
 		return BlockRenderType.MODEL;
 	}
@@ -63,6 +57,4 @@ public class DoomSaplingBlock extends BlockWithEntity {
 	public BlockEntity createBlockEntity(BlockView var1) {
 		return new DoomSaplingBlockEntity();
 	}
-
-
 }

@@ -23,13 +23,6 @@ package grondag.adversity.registry;
 
 import static grondag.adversity.Adversity.REG;
 
-import grondag.adversity.item.MilkPotion;
-import grondag.adversity.item.NoteItem;
-import grondag.adversity.item.SalvationPotion;
-import grondag.adversity.item.WardingPotion;
-import grondag.fermion.block.sign.OpenSignItem;
-import grondag.fermion.registrar.SimpleArmorMaterial;
-import grondag.fermion.registrar.SimpleToolMaterial;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.AxeItem;
@@ -43,6 +36,14 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.sound.SoundEvents;
+
+import grondag.adversity.item.MilkPotion;
+import grondag.adversity.item.NoteItem;
+import grondag.adversity.item.SalvationPotion;
+import grondag.adversity.item.WardingPotion;
+import grondag.fermion.block.sign.OpenSignItem;
+import grondag.fermion.registrar.SimpleArmorMaterial;
+import grondag.fermion.registrar.SimpleToolMaterial;
 
 public enum AdversityItems {
 	;

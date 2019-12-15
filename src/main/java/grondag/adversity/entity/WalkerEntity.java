@@ -23,11 +23,9 @@ package grondag.adversity.entity;
 
 import java.util.List;
 
-import grondag.adversity.Adversity;
-import grondag.adversity.registry.AdversityParticles;
-import grondag.adversity.registry.AdversitySounds;
 import io.netty.util.internal.ThreadLocalRandom;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+
 //import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -60,6 +58,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
+
+import grondag.adversity.Adversity;
+import grondag.adversity.registry.AdversityParticles;
+import grondag.adversity.registry.AdversitySounds;
 
 public class WalkerEntity extends HostileEntity {
 	public static final int TARGET_RANGE = 32;
@@ -121,7 +123,7 @@ public class WalkerEntity extends HostileEntity {
 					final double d = 1 - (distanceTo(player) / 64d);
 
 					if (d > 0) {
-						world.playSound(x, y, z, AdversitySounds.WALKER_CHARGE, SoundCategory.HOSTILE, (float) (d * d), 1, false);
+						world.playSound(getZ(), getY(), getZ(), AdversitySounds.WALKER_CHARGE, SoundCategory.HOSTILE, (float) (d * d), 1, false);
 					}
 				}
 				pulseCount = 1;
@@ -168,14 +170,16 @@ public class WalkerEntity extends HostileEntity {
 	}
 
 	public static boolean isValidTarget(LivingEntity target) {
-		if(target == null || !target.isAlive()) return false;
+		if(target == null || !target.isAlive()) {
+			return false;
+		}
 
 		if(target instanceof PlayerEntity) {
 			return !target.isSpectator() && !((PlayerEntity) target).isCreative();
 		}
 
 		return target instanceof AbstractTraderEntity || target instanceof IronGolemEntity
-			|| target instanceof WolfEntity;
+				|| target instanceof WolfEntity;
 	}
 
 	public static boolean isValidTargetEntity(Entity target) {
@@ -206,23 +210,31 @@ public class WalkerEntity extends HostileEntity {
 		}
 
 		if (best == null) {
-			final int minX = MathHelper.floor((x - TARGET_RANGE - 2.0D) / 16.0D);
-			final int maxX = MathHelper.floor((x + TARGET_RANGE + 2.0D) / 16.0D);
-			final int minZ = MathHelper.floor((z - TARGET_RANGE - 2.0D) / 16.0D);
-			final int maxZ = MathHelper.floor((z + TARGET_RANGE + 2.0D) / 16.0D);
-			final int minY = Math.max(0, MathHelper.floor((y - 6.0D) / 16.0D));
-			final int maxY = Math.min(15, MathHelper.floor((y + 6.0D) / 16.0D));
+			final double myX = getX();
+			final double myY = getY();
+			final double myZ = getZ();
+
+			final int minX = MathHelper.floor((myX - TARGET_RANGE - 2.0D) / 16.0D);
+			final int maxX = MathHelper.floor((myX + TARGET_RANGE + 2.0D) / 16.0D);
+			final int minZ = MathHelper.floor((myZ - TARGET_RANGE - 2.0D) / 16.0D);
+			final int maxZ = MathHelper.floor((myZ + TARGET_RANGE + 2.0D) / 16.0D);
+			final int minY = Math.max(0, MathHelper.floor((myY - 6.0D) / 16.0D));
+			final int maxY = Math.min(15, MathHelper.floor((myY + 6.0D) / 16.0D));
 
 			for(int x = minX; x <= maxX; ++x) {
 				for(int z = minZ; z <= maxZ; ++z) {
 					final WorldChunk chunk = world.getChunkManager().getWorldChunk(x, z, false);
 
-					if (chunk == null) continue;
+					if (chunk == null) {
+						continue;
+					}
 
 					for(int y = minY; y <= maxY; ++y) {
 						final TypeFilterableList<Entity> list = chunk.getEntitySectionArray()[y];
 
-						if(list == null) continue;
+						if(list == null) {
+							continue;
+						}
 
 						for (final Entity e : chunk.getEntitySectionArray()[y]) {
 							if (e instanceof LivingEntity && isValidTarget((LivingEntity) e)) {
@@ -249,7 +261,7 @@ public class WalkerEntity extends HostileEntity {
 				pulseCount++;
 				doChargeParticles();
 			}
-		} else if (world != null && (world.getTime() & 0xFF) == healTick && getHealth() < getHealthMaximum()) {
+		} else if (world != null && (world.getTime() & 0xFF) == healTick && getHealth() < getMaximumHealth()) {
 			heal(0.25f);
 		}
 
@@ -257,13 +269,13 @@ public class WalkerEntity extends HostileEntity {
 	}
 
 	private void doChargeParticles() {
-		final double yLook = (y + getStandingEyeHeight() + WalkerAttackGoal.FIRE_HEIGHT_OFFSET);
+		final double yLook = (getY() + getStandingEyeHeight() + WalkerAttackGoal.FIRE_HEIGHT_OFFSET);
 
 		final Vec3d look = getRotationVec(1.0F).normalize();
 
-		final double px = x + look.x * 0.5;
+		final double px = getX() + look.x * 0.5;
 		final double py = yLook + look.y * 0.5;
-		final double pz = z + look.z * 0.5;
+		final double pz = getZ() + look.z * 0.5;
 
 		world.addParticle(AdversityParticles.WALKER_PULSE, px + random.nextGaussian() * 0.1, py + random.nextGaussian() * 0.1, pz + random.nextGaussian() * 0.1, 0, 0, 0);
 	}
@@ -334,14 +346,14 @@ public class WalkerEntity extends HostileEntity {
 	}
 
 	@Override
-	public boolean isPotionEffective(StatusEffectInstance effectInstance) {
+	public boolean canHaveStatusEffect(StatusEffectInstance effectInstance) {
 		final StatusEffect effect = effectInstance.getEffectType();
 
 		if (effect == StatusEffects.REGENERATION || effect == StatusEffects.POISON
-			|| effect == StatusEffects.POISON || effect == StatusEffects.WITHER) {
+				|| effect == StatusEffects.POISON || effect == StatusEffects.WITHER) {
 			return false;
 		}
 
-		return super.isPotionEffective(effectInstance);
+		return super.canHaveStatusEffect(effectInstance);
 	}
 }

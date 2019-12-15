@@ -24,10 +24,6 @@ package grondag.adversity.block.player;
 import static grondag.adversity.block.player.AlchemicalBlockEntity.UNITS_PER_BUCKET;
 import static grondag.adversity.block.player.AlchemicalBlockEntity.UNITS_PER_INGOT;
 
-import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
-import grondag.adversity.registry.AdversityItems;
-import grondag.adversity.registry.AdversityRecipes;
-import grondag.fermion.recipe.AbstractSimpleRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -43,13 +39,18 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import grondag.adversity.block.player.AlchemicalBlockEntity.Mode;
+import grondag.adversity.registry.AdversityItems;
+import grondag.adversity.registry.AdversityRecipes;
+import grondag.fermion.recipe.AbstractSimpleRecipe;
+
 public class BasinBlock extends AlchemicalBlock {
 	public static final VoxelShape RAY_TRACE_SHAPE = createCuboidShape(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 	public static final VoxelShape OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), VoxelShapes.union(createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), RAY_TRACE_SHAPE), BooleanBiFunction.ONLY_FIRST);
 
 	public BasinBlock(Block.Settings settings) {
 		super(settings, AdversityRecipes.BASIN_RECIPE_TYPE);
-		setDefaultState(stateFactory.getDefaultState().with(LIT, false));
+		setDefaultState(stateManager.getDefaultState().with(LIT, false));
 	}
 
 	@Override
@@ -70,22 +71,28 @@ public class BasinBlock extends AlchemicalBlock {
 	@Override
 	int fuelValue(Item item) {
 		return item == AdversityItems.WARDING_ESSENCE_ITEM ? UNITS_PER_INGOT
-			: item == AdversityItems.WARDING_ESSENCE_BLOCK_ITEM ? UNITS_PER_BUCKET : 0;
+				: item == AdversityItems.WARDING_ESSENCE_BLOCK_ITEM ? UNITS_PER_BUCKET : 0;
 	}
 
 	@Override
 	protected boolean handleActiveRecipe(BlockState blockState, World world, BlockPos pos, AlchemicalBlockEntity blockEntity, PlayerEntity player, Hand hand, ItemStack stack, int currentUnits) {
-		if (stack.isEmpty()) return false;
+		if (stack.isEmpty()) {
+			return false;
+		}
 
 		final AbstractSimpleRecipe recipe = AdversityRecipes.HELPER.get(AdversityRecipes.BASIN_REPAIR_RECIPE_TYPE, stack);
 
-		if (recipe == null) return false;
+		if (recipe == null) {
+			return false;
+		}
 
 		final float basecost = recipe.cost;
 		final int maxCost = Math.round(basecost * stack.getDamage() / stack.getMaxDamage());
 		final int cost = Math.min(currentUnits, maxCost);
 
-		if (cost == 0) return true;
+		if (cost == 0) {
+			return true;
+		}
 
 		if (!world.isClient) {
 			final int newUnits = currentUnits - cost;

@@ -24,12 +24,14 @@ package grondag.adversity.item;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import grondag.adversity.registry.AdversityEffects;
 import it.unimi.dsi.fastutil.HashCommon;
+
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import grondag.adversity.registry.AdversityEffects;
 
 public class MilkPotion extends AbstractPotion {
 	public MilkPotion(final Settings settings) {
@@ -39,14 +41,16 @@ public class MilkPotion extends AbstractPotion {
 	@Override
 	public void applyEffects(final ItemStack stack, final World world, final PlayerEntity player) {
 		final List<StatusEffectInstance> candidates = player.getStatusEffects()
-			.stream()
-			.filter(e -> !AdversityEffects.isImmuneToMilk(e.getEffectType()))
-			.collect(Collectors.toList());
+				.stream()
+				.filter(e -> !AdversityEffects.isImmuneToMilk(e.getEffectType()))
+				.collect(Collectors.toList());
 
-		if (candidates.isEmpty()) return;
+		if (candidates.isEmpty()) {
+			return;
+		}
 
 		final int size = candidates.size();
 
-		player.removePotionEffect(candidates.get(HashCommon.mix(size) % size).getEffectType());
+		player.removeStatusEffect(candidates.get(HashCommon.mix(size) % size).getEffectType());
 	}
 }

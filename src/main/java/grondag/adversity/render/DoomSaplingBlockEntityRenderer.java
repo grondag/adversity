@@ -23,31 +23,27 @@ package grondag.adversity.render;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
-import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.util.math.Matrix4f;
+import net.minecraft.client.util.math.MatrixStack;
 
 import grondag.adversity.block.tree.DoomSaplingBlockEntity;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
 public class DoomSaplingBlockEntityRenderer extends BlockEntityRenderer<DoomSaplingBlockEntity> {
-	@Override
-	public void render(DoomSaplingBlockEntity sapling, double x, double y, double z, float tickDelta, int lightmap) {
-		super.render(sapling, x, y, z, tickDelta, lightmap);
+	public DoomSaplingBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
+		super(blockEntityRenderDispatcher);
+	}
 
-		final Tessellator tess = Tessellator.getInstance();
-		final BufferBuilder builder = tess.getBufferBuilder();
-		GlStateManager.disableTexture();
-		GlStateManager.disableLighting();
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-		final double[] xOffset = new double[8];
-		final double[] zOffset = new double[8];
-		double xNext = 0.0D;
-		double zNext = 0.0D;
+	@Override
+	public void render(DoomSaplingBlockEntity sapling, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int lightmap, int overlay) {
+		final float[] xOffset = new float[8];
+		final float[] zOffset = new float[8];
+		float xNext = 0.0F;
+		float zNext = 0.0F;
 		final Random rand = sapling.renderRand;
 		rand.setSeed(sapling.renderSeed);
 
@@ -57,6 +53,9 @@ public class DoomSaplingBlockEntityRenderer extends BlockEntityRenderer<DoomSapl
 			xNext += (rand.nextInt(11) - 5);
 			zNext += (rand.nextInt(11) - 5);
 		}
+
+		final VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getLightning());
+		final Matrix4f matrix4f = matrixStack.peek().getModel();
 
 		for(int i = 0; i < 4; ++i) {
 			rand.setSeed(sapling.renderSeed);
@@ -73,12 +72,12 @@ public class DoomSaplingBlockEntityRenderer extends BlockEntityRenderer<DoomSapl
 					yMin = yMax - 2;
 				}
 
-				double xRand0 = xOffset[yMax] - xNext;
-				double zRand0 = zOffset[yMax] - zNext;
+				float xRand0 = xOffset[yMax] - xNext;
+				float zRand0 = zOffset[yMax] - zNext;
 
 				for(int yStep = yMax; yStep >= yMin; --yStep) {
-					final double xRand1 = xRand0;
-					final double zRand1 = zRand0;
+					final float xRand1 = xRand0;
+					final float zRand1 = zRand0;
 
 					if (j == 0) {
 						xRand0 += (rand.nextInt(11) - 5);
@@ -88,58 +87,35 @@ public class DoomSaplingBlockEntityRenderer extends BlockEntityRenderer<DoomSapl
 						zRand0 += (rand.nextInt(31) - 15);
 					}
 
-					builder.begin(GL11.GL_TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
-					double a = 0.05D + i * 0.1D; //0.1D + i * 0.2D;
+					float y = 0.1F + i * 0.2F;
 
 					if (j == 0) {
-						a *= yStep * 0.05D + 0.1; //* 0.1D + 1.0D;
+						y = (float)(y * (yStep * 0.1D + 1.0D));
 					}
 
-					double b = 0.05D + i * 0.1D; //0.1D + i * 0.2D;
-
+					float z = 0.1F + i * 0.2F;
 					if (j == 0) {
-						b *= (yStep - 1) * 0.05D + 0.1; //* 0.1D + 1.0D;
+						z *= (yStep - 1) * 0.1F + 1.0F;
 					}
 
-					for(int k = 0; k < 5; ++k) {
-						double x1 = x - a;
-						double z1 = z - a;
-
-						if (k == 1 || k == 2) {
-							x1 += a * 2.0D;
-						}
-
-						if (k == 2 || k == 3) {
-							z1 += a * 2.0D;
-						}
-
-						double x0 = x - b;
-						double z0 = z - b;
-
-						if (k == 1 || k == 2) {
-							x0 += b * 2.0D;
-						}
-
-						if (k == 2 || k == 3) {
-							z0 += b * 2.0D;
-						}
-
-						builder.vertex(x0 + xRand0, y + (yStep * 16), z0 + zRand0).color(0.45F, 0.45F, 0.5F, 0.3F).next();
-						builder.vertex(x1 + xRand1, y + ((yStep + 1) * 16), z1 + zRand1).color(0.45F, 0.45F, 0.5F, 0.3F).next();
-					}
-
-					tess.draw();
+					renderInner(matrix4f, vertexConsumer, xRand0, zRand0, yStep, xRand1, zRand1, 0.45F, 0.45F, 0.5F, y, z, false, false, true, false);
+					renderInner(matrix4f, vertexConsumer, xRand0, zRand0, yStep, xRand1, zRand1, 0.45F, 0.45F, 0.5F, y, z, true, false, true, true);
+					renderInner(matrix4f, vertexConsumer, xRand0, zRand0, yStep, xRand1, zRand1, 0.45F, 0.45F, 0.5F, y, z, true, true, false, true);
+					renderInner(matrix4f, vertexConsumer, xRand0, zRand0, yStep, xRand1, zRand1, 0.45F, 0.45F, 0.5F, y, z, false, true, false, false);
 				}
 			}
 		}
+	}
 
-		GlStateManager.disableBlend();
-		GlStateManager.enableLighting();
-		GlStateManager.enableTexture();
+	private static void renderInner(Matrix4f matrix4f, VertexConsumer vertexConsumer, float f, float g, int i, float h, float j, float k, float l, float m, float n, float o, boolean bl, boolean bl2, boolean bl3, boolean bl4) {
+		vertexConsumer.vertex(matrix4f, f + (bl ? o : -o), i * 16, g + (bl2 ? o : -o)).color(k, l, m, 0.3F).next();
+		vertexConsumer.vertex(matrix4f, h + (bl ? n : -n), (i + 1) * 16, j + (bl2 ? n : -n)).color(k, l, m, 0.3F).next();
+		vertexConsumer.vertex(matrix4f, h + (bl3 ? n : -n), (i + 1) * 16, j + (bl4 ? n : -n)).color(k, l, m, 0.3F).next();
+		vertexConsumer.vertex(matrix4f, f + (bl3 ? o : -o), i * 16, g + (bl4 ? o : -o)).color(k, l, m, 0.3F).next();
 	}
 
 	@Override
-	public boolean method_3563(DoomSaplingBlockEntity sapling) {
+	public boolean rendersOutsideBoundingBox(DoomSaplingBlockEntity blockEntity) {
 		return true;
 	}
 }

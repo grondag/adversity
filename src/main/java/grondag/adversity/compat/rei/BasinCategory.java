@@ -21,11 +21,12 @@
  ******************************************************************************/
 package grondag.adversity.compat.rei;
 
-import grondag.adversity.registry.AdversityBlocks;
-import me.shedaniel.rei.api.Renderer;
+import me.shedaniel.rei.api.EntryStack;
+
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+
+import grondag.adversity.registry.AdversityBlocks;
 
 public class BasinCategory extends AlchemicalCategory<BasinDisplay> {
 	@Override
@@ -34,8 +35,8 @@ public class BasinCategory extends AlchemicalCategory<BasinDisplay> {
 	}
 
 	@Override
-	public Renderer getIcon() {
-		return Renderer.fromItemStack(new ItemStack(AdversityBlocks.BASIN_BLOCK));
+	public EntryStack getLogo() {
+		return EntryStack.create(AdversityBlocks.BASIN_BLOCK);
 	}
 
 	@Override

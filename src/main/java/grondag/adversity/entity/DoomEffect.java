@@ -25,14 +25,11 @@ import java.util.Iterator;
 
 import javax.annotation.Nullable;
 
-import grondag.adversity.registry.AdversityEffects;
-import grondag.adversity.registry.AdversityTags;
-import grondag.fermion.entity.StatusEffectAccess;
 import io.netty.util.internal.ThreadLocalRandom;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AbstractEntityAttributeContainer;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectType;
@@ -40,6 +37,10 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+
+import grondag.adversity.registry.AdversityEffects;
+import grondag.adversity.registry.AdversityTags;
+import grondag.fermion.entity.StatusEffectAccess;
 
 public class DoomEffect extends StatusEffect {
 	private static final int[] AMPLIFIER_DURATION_SECONDS = {120, 90, 60, 50, 40, 30, 25, 20, 15, 10};
@@ -75,11 +76,15 @@ public class DoomEffect extends StatusEffect {
 
 	/** result is two ints packed in a long to avoid allocating tuples.  Amplitude is high side */
 	private static long calcDoom(final LivingEntity entity, @Nullable final StatusEffectInstance doom ) {
-		if (entity == null) return 0;
+		if (entity == null) {
+			return 0;
+		}
 
 		int exposure  = ((DoomEntityAccess) entity).getAndClearDoomExposure();
 
-		if(exposure == 0 && doom == null) return 0;
+		if(exposure == 0 && doom == null) {
+			return 0;
+		}
 
 		final int currentAmplifier = doom == null ? 0 : doom.getAmplifier();
 		final int currentDuration = doom == null ? 0 : doom.getDuration();
@@ -118,18 +123,6 @@ public class DoomEffect extends StatusEffect {
 		// NO OP
 	}
 
-	// adds modifiers
-	@Override
-	public void method_5555(final LivingEntity livingEntity_1, final AbstractEntityAttributeContainer abstractEntityAttributeContainer_1, final int int_1) {
-		super.method_5555(livingEntity_1, abstractEntityAttributeContainer_1, int_1);
-	}
-
-	// removes modifiers
-	@Override
-	public void method_5562(final LivingEntity livingEntity_1, final AbstractEntityAttributeContainer abstractEntityAttributeContainer_1, final int int_1) {
-		super.method_5562(livingEntity_1, abstractEntityAttributeContainer_1, int_1);
-	}
-
 	public static void exposeToDoom(final Entity e, final int exposure) {
 		if (canDoom(e)) {
 			((DoomEntityAccess) e).exposeToDoom(exposure);
@@ -154,7 +147,9 @@ public class DoomEffect extends StatusEffect {
 
 		final float potion = e.hasStatusEffect(AdversityEffects.WARDING_EFFECT) ? 0.25f : 0;
 
-		if(armor == null) return potion;
+		if(armor == null) {
+			return potion;
+		}
 
 		final Iterator<ItemStack> it = armor.iterator();
 
@@ -185,12 +180,12 @@ public class DoomEffect extends StatusEffect {
 
 	public static boolean canDoom(final Entity e) {
 		return e instanceof LivingEntity
-			&& e.isAlive()
-			&& !(e instanceof PlayerEntity && ((PlayerEntity) e).isCreative())
-			&& !e.isInvulnerable()
-			&& !e.isSpectator()
-			&& ((LivingEntity) e).getGroup() != EntityGroup.UNDEAD
-			&& !AdversityTags.UNDOOMED.contains(e.getType()) ;
+				&& e.isAlive()
+				&& !(e instanceof PlayerEntity && ((PlayerEntity) e).isCreative())
+				&& !e.isInvulnerable()
+				&& !e.isSpectator()
+				&& ((LivingEntity) e).getGroup() != EntityGroup.UNDEAD
+				&& !AdversityTags.UNDOOMED.contains(e.getType()) ;
 	}
 
 	public static void beforeSpawnPotionParticles(final LivingEntity me) {
@@ -199,16 +194,20 @@ public class DoomEffect extends StatusEffect {
 		final boolean isClient = me.world == null || me.world.isClient;
 
 		final long doomVals = DoomEffect.calcDoom(me, doom);
-		if (doomVals == 0) return;
+		if (doomVals == 0) {
+			return;
+		}
 
 		final int duration = (int) (doomVals & 0xFFFFFFFFL);
 		final int amplifier = (int) (doomVals >>> 32 & 0xFFFFFFFFL);
 
 		if (doom == null) {
-			if (isClient) return;
+			if (isClient) {
+				return;
+			}
 
 			doom = new StatusEffectInstance(AdversityEffects.DOOM_EFFECT, duration, amplifier, false, false, true);
-			me.addPotionEffect(doom);
+			me.addStatusEffect(doom);
 		} else if (duration != doom.getDuration() || amplifier != doom.getAmplifier()) {
 			StatusEffectAccess.access(doom).fermion_set(duration, amplifier);
 		}
@@ -237,7 +236,9 @@ public class DoomEffect extends StatusEffect {
 			final StatusEffectInstance slowness = me.getStatusEffect(StatusEffects.SLOWNESS);
 
 			if (slowness == null) {
-				if (!isClient) me.addPotionEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, duration, 0, false, false, true));
+				if (!isClient) {
+					me.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, duration, 0, false, false, true));
+				}
 			} else if (slowness.getAmplifier() == 0 && slowness.getDuration() < duration) {
 				StatusEffectAccess.access(slowness).fermion_setDuration(duration);
 			}
@@ -249,7 +250,9 @@ public class DoomEffect extends StatusEffect {
 			final StatusEffectInstance fatigue = me.getStatusEffect(StatusEffects.MINING_FATIGUE);
 
 			if (fatigue == null) {
-				if (!isClient) me.addPotionEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, duration, 0, false, false, true));
+				if (!isClient) {
+					me.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, duration, 0, false, false, true));
+				}
 			} else if (fatigue.getAmplifier() == 0 && fatigue.getDuration() < duration) {
 				StatusEffectAccess.access(fatigue).fermion_setDuration(duration);
 			}
@@ -261,7 +264,9 @@ public class DoomEffect extends StatusEffect {
 			final StatusEffectInstance weakness = me.getStatusEffect(StatusEffects.WEAKNESS);
 
 			if (weakness == null) {
-				if (!isClient) me.addPotionEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, duration, 0, false, false, true));
+				if (!isClient) {
+					me.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, duration, 0, false, false, true));
+				}
 			} else if (weakness.getAmplifier() == 0 && weakness.getDuration() < duration) {
 				StatusEffectAccess.access(weakness).fermion_setDuration(duration);
 			}
@@ -300,7 +305,9 @@ public class DoomEffect extends StatusEffect {
 			final StatusEffectInstance hungerEffect = me.getStatusEffect(StatusEffects.HUNGER);
 
 			if (hungerEffect == null || hungerEffect.getAmplifier() < hunger) {
-				if (!isClient) me.addPotionEffect(new StatusEffectInstance(StatusEffects.HUNGER, duration, hunger, false, false, true));
+				if (!isClient) {
+					me.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, duration, hunger, false, false, true));
+				}
 			} else if (hungerEffect.getAmplifier() == hunger && hungerEffect.getDuration() < duration) {
 				StatusEffectAccess.access(hungerEffect).fermion_set(duration, hunger);
 			}
@@ -310,9 +317,12 @@ public class DoomEffect extends StatusEffect {
 			final StatusEffectInstance frailtyEffect = me.getStatusEffect(AdversityEffects.FRAILTY);
 
 			if (frailtyEffect == null || frailtyEffect.getAmplifier() < frailty) {
-				if (!isClient) me.addPotionEffect(new StatusEffectInstance(AdversityEffects.FRAILTY, duration, frailty, false, false, true));
-			} else if (frailtyEffect.getAmplifier() == frailty && frailtyEffect.getDuration() < duration)
+				if (!isClient) {
+					me.addStatusEffect(new StatusEffectInstance(AdversityEffects.FRAILTY, duration, frailty, false, false, true));
+				}
+			} else if (frailtyEffect.getAmplifier() == frailty && frailtyEffect.getDuration() < duration) {
 				StatusEffectAccess.access(frailtyEffect).fermion_set(duration, frailty);
+			}
 		}
 	}
 }

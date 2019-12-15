@@ -25,6 +25,40 @@ import static grondag.adversity.Adversity.REG;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractGlassBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FenceBlock;
+import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.LanternBlock;
+import net.minecraft.block.LeverBlock;
+import net.minecraft.block.LogBlock;
+import net.minecraft.block.Material;
+import net.minecraft.block.MaterialColor;
+import net.minecraft.block.PaneBlock;
+import net.minecraft.block.PressurePlateBlock;
+import net.minecraft.block.StoneButtonBlock;
+import net.minecraft.block.TorchBlock;
+import net.minecraft.block.WallBlock;
+import net.minecraft.block.WallTorchBlock;
+import net.minecraft.block.WeightedPressurePlateBlock;
+import net.minecraft.block.WoodButtonBlock;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.tools.FabricToolTags;
+
 import grondag.adversity.block.player.AlchemicalBlock;
 import grondag.adversity.block.player.BasinBlock;
 import grondag.adversity.block.player.BasinBlockEntity;
@@ -58,37 +92,6 @@ import grondag.adversity.ichor.IchorBlock;
 import grondag.fermion.block.sign.OpenSignBlock;
 import grondag.fermion.block.sign.OpenSignBlockEntity;
 import grondag.fermion.block.sign.OpenWallSignBlock;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.tools.FabricToolTags;
-import net.minecraft.block.AbstractGlassBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.LanternBlock;
-import net.minecraft.block.LeverBlock;
-import net.minecraft.block.LogBlock;
-import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.block.PressurePlateBlock;
-import net.minecraft.block.StoneButtonBlock;
-import net.minecraft.block.TorchBlock;
-import net.minecraft.block.WallBlock;
-import net.minecraft.block.WallTorchBlock;
-import net.minecraft.block.WeightedPressurePlateBlock;
-import net.minecraft.block.WoodButtonBlock;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 
 public enum AdversityBlocks {
 	;
@@ -305,11 +308,6 @@ public enum AdversityBlocks {
 
 	public static Block WARDED_GLASS_PANE = REG.block("warded_glass_pane", new PaneBlock(FabricBlockSettings.of(Material.GLASS).strength(1F, 8.0F).sounds(BlockSoundGroup.GLASS).build()) {
 		@Override
-		public BlockRenderLayer getRenderLayer() {
-			return BlockRenderLayer.TRANSLUCENT;
-		}
-
-		@Override
 		@Environment(EnvType.CLIENT)
 		public boolean isSideInvisible(BlockState myState, BlockState otherState, Direction face) {
 			if (otherState.getBlock() == this) {
@@ -335,17 +333,17 @@ public enum AdversityBlocks {
 
 	public static Block WARDED_GLASS = REG.block("warded_glass", new AbstractGlassBlock(FabricBlockSettings.of(Material.GLASS, DyeColor.WHITE).strength(1F, 8F).sounds(BlockSoundGroup.GLASS).build()) {
 		@Override
-		public BlockRenderLayer getRenderLayer() {
-			return BlockRenderLayer.TRANSLUCENT;
-		}
-
-		@Override
 		public void onBlockRemoved(BlockState myState, World world, BlockPos blockPos, BlockState newState, boolean someFlag) {
 			super.onBlockRemoved(myState, world, blockPos, newState, someFlag);
 
 			DoomTreeTracker.reportBreak(world, blockPos, false);
 		}
 	});
+
+	static {
+		BlockRenderLayerMap.INSTANCE.putBlock(WARDED_GLASS_PANE, RenderLayer.getTranslucent());
+		BlockRenderLayerMap.INSTANCE.putBlock(WARDED_GLASS, RenderLayer.getTranslucent());
+	}
 
 	static FabricBlockSettings logSettings() {
 		return FabricBlockSettings.of(Material.WOOD).breakByTool(FabricToolTags.AXES, 2).strength(3.0F, 20.0F);

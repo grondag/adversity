@@ -21,11 +21,7 @@
  ******************************************************************************/
 package grondag.adversity.block.tree;
 
-import grondag.adversity.block.treeheart.DoomTreeTracker;
-import grondag.adversity.registry.AdversityBlocks;
-import grondag.adversity.registry.AdversityItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PlantBlock;
@@ -38,6 +34,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -46,12 +43,16 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import grondag.adversity.block.treeheart.DoomTreeTracker;
+import grondag.adversity.registry.AdversityBlocks;
+import grondag.adversity.registry.AdversityItems;
+
 public class ForebodingShrubBlock extends PlantBlock {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 14.0D, 14.0D);
 
 	public ForebodingShrubBlock(final Block.Settings settings) {
 		super(settings);
-		setDefaultState(stateFactory.getDefaultState());
+		setDefaultState(stateManager.getDefaultState());
 	}
 
 	@Override
@@ -60,18 +61,13 @@ public class ForebodingShrubBlock extends PlantBlock {
 	}
 
 	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.SOLID;
-	}
-
-	@Override
 	public void onEntityCollision(final BlockState blockState, final World world, final BlockPos pos, final Entity entity) {
 		if (entity instanceof LivingEntity && entity.getType() != EntityType.FOX) {
 			entity.slowMovement(blockState, new Vec3d(0.800000011920929D, 0.75D, 0.800000011920929D));
 
-			if (!world.isClient && (entity.prevRenderX != entity.x || entity.prevRenderZ != entity.z)) {
-				final double dx = Math.abs(entity.x - entity.prevRenderX);
-				final double dz = Math.abs(entity.z - entity.prevRenderZ);
+			if (!world.isClient && (entity.lastRenderX != entity.getX() || entity.lastRenderZ != entity.getZ())) {
+				final double dx = Math.abs(entity.getX() - entity.lastRenderX);
+				final double dz = Math.abs(entity.getZ() - entity.lastRenderZ);
 				if (dx >= 0.003000000026077032D || dz >= 0.003000000026077032D) {
 					entity.damage(DamageSource.MAGIC, 1.0F);
 				}
@@ -88,29 +84,29 @@ public class ForebodingShrubBlock extends PlantBlock {
 
 		final Block block = blockState.getBlock();
 		return BlockTags.SAND.contains(block) || block == Blocks.TERRACOTTA
-			|| block == Blocks.GRAVEL || block == Blocks.CLAY  || block == AdversityBlocks.GENERATIVE_MATRIX;
+				|| block == Blocks.GRAVEL || block == Blocks.CLAY  || block == AdversityBlocks.GENERATIVE_MATRIX;
 	}
 
 	static long lastMessageTime = 0;
 
 	@Override
-	public boolean activate(final BlockState blockState, final World world, final BlockPos blockPos, final PlayerEntity player, final Hand hand, final BlockHitResult blockhit) {
+	public ActionResult onUse(final BlockState blockState, final World world, final BlockPos blockPos, final PlayerEntity player, final Hand hand, final BlockHitResult blockhit) {
 		if  (!world.isClient && player != null &&  player.getMainHandStack().getItem() ==  AdversityItems.ALCHEMICAL_ENGINE) {
 			final BlockPos.Mutable mPos = new BlockPos.Mutable();
 
 			if (!isMatrixInAndAround(world, blockPos, mPos)) {
 				sendMessageNoSpam(player, "help.doomtree.missing_matrix");
-				return true;
+				return ActionResult.SUCCESS;
 			}
 
 			if (!hasSurroundingBlocks(world, blockPos, mPos)) {
 				sendMessageNoSpam(player, "help.doomtree.missing_blocks");
-				return true;
+				return ActionResult.SUCCESS;
 			}
 
 			if (!DoomTreeTracker.canGrow(world, blockPos)) {
 				sendMessageNoSpam(player, "help.doomtree.bad_position");
-				return true;
+				return ActionResult.SUCCESS;
 			}
 
 			//			if (world.getBiome(blockPos).getPrecipitation() != Precipitation.RAIN) {
@@ -120,15 +116,15 @@ public class ForebodingShrubBlock extends PlantBlock {
 
 			if (!world.isSkyVisible(blockPos)) {
 				sendMessageNoSpam(player, "help.doomtree.no_sky");
-				return true;
+				return ActionResult.SUCCESS;
 			}
 
 			world.setBlockState(blockPos, AdversityBlocks.DOOM_SAPLING_BLOCK.getDefaultState());
 			player.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
-			return  true;
+			return  ActionResult.SUCCESS;
 		}
 
-		return super.activate(blockState, world, blockPos, player, hand, blockhit);
+		return super.onUse(blockState, world, blockPos, player, hand, blockhit);
 	}
 
 	private static void sendMessageNoSpam(final PlayerEntity player, final String key) {
@@ -146,14 +142,14 @@ public class ForebodingShrubBlock extends PlantBlock {
 		final int z = pos.getZ();
 
 		return isMatrix(world, mPos.set(x, y, z))
-			&& isMatrix(world, mPos.set(x - 1, y, z - 1))
-			&& isMatrix(world, mPos.set(x - 1, y, z))
-			&& isMatrix(world, mPos.set(x - 1, y, z + 1))
-			&& isMatrix(world, mPos.set(x, y, z - 1))
-			&& isMatrix(world, mPos.set(x, y, z + 1))
-			&& isMatrix(world, mPos.set(x + 1, y, z - 1))
-			&& isMatrix(world, mPos.set(x + 1, y, z))
-			&& isMatrix(world, mPos.set(x + 1, y, z + 1));
+				&& isMatrix(world, mPos.set(x - 1, y, z - 1))
+				&& isMatrix(world, mPos.set(x - 1, y, z))
+				&& isMatrix(world, mPos.set(x - 1, y, z + 1))
+				&& isMatrix(world, mPos.set(x, y, z - 1))
+				&& isMatrix(world, mPos.set(x, y, z + 1))
+				&& isMatrix(world, mPos.set(x + 1, y, z - 1))
+				&& isMatrix(world, mPos.set(x + 1, y, z))
+				&& isMatrix(world, mPos.set(x + 1, y, z + 1));
 	}
 
 	private static boolean isMatrix(final World world, final BlockPos pos) {

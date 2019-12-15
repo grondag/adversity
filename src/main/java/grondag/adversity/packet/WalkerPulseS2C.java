@@ -23,18 +23,9 @@ package grondag.adversity.packet;
 
 import java.util.Random;
 
-import grondag.adversity.Adversity;
-import grondag.adversity.entity.Explodinator;
-import grondag.adversity.entity.Explodinator.ExplosionFX;
-import grondag.adversity.entity.WalkerAttackGoal;
-import grondag.adversity.entity.WalkerEntity;
-import grondag.adversity.registry.AdversityParticles;
-import grondag.adversity.registry.AdversitySounds;
 import io.netty.buffer.Unpooled;
 import io.netty.util.internal.ThreadLocalRandom;
-import net.fabricmc.fabric.api.network.PacketContext;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-import net.fabricmc.fabric.api.server.PlayerStream;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.particle.ParticleTypes;
@@ -44,6 +35,18 @@ import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import net.fabricmc.fabric.api.network.PacketContext;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.server.PlayerStream;
+
+import grondag.adversity.Adversity;
+import grondag.adversity.entity.Explodinator;
+import grondag.adversity.entity.Explodinator.ExplosionFX;
+import grondag.adversity.entity.WalkerAttackGoal;
+import grondag.adversity.entity.WalkerEntity;
+import grondag.adversity.registry.AdversityParticles;
+import grondag.adversity.registry.AdversitySounds;
 
 public enum WalkerPulseS2C {
 	;
@@ -56,8 +59,8 @@ public enum WalkerPulseS2C {
 		buf.writeDouble(to.z);
 		explosion.toBuffer(buf);
 
-		final Vec3d middle = new Vec3d((from.x + to.x) * 0.5, (from.y + to.y) * 0.5, (from.z + to.z) * 0.5);
-		final double radius = MathHelper.sqrt(middle.squaredDistanceTo(from.x, from.y, from.z)) + 64;
+		final Vec3d middle = new Vec3d((from.getX() + to.x) * 0.5, (from.getY() + to.y) * 0.5, (from.getZ() + to.z) * 0.5);
+		final double radius = MathHelper.sqrt(middle.squaredDistanceTo(from.getX(), from.getY(), from.getZ())) + 64;
 
 		PlayerStream.around(world, middle, radius).forEach(p -> {
 			final PacketByteBuf playerBuf = new PacketByteBuf(Unpooled.buffer());
@@ -94,7 +97,7 @@ public enum WalkerPulseS2C {
 
 		final World world = player.world;
 
-		final Vec3d from = new Vec3d(walker.x, walker.y + walker.getStandingEyeHeight() + WalkerAttackGoal.FIRE_HEIGHT_OFFSET, walker.z);
+		final Vec3d from = new Vec3d(walker.getX(), walker.getY() + walker.getStandingEyeHeight() + WalkerAttackGoal.FIRE_HEIGHT_OFFSET, walker.getZ());
 		final double dStep =  0.25 / from.distanceTo(to);
 
 		final Random rand =  ThreadLocalRandom.current();

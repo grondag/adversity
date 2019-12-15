@@ -29,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import grondag.adversity.registry.AdversityEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,6 +40,8 @@ import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+
+import grondag.adversity.registry.AdversityEffects;
 
 @Mixin(MilkBucketItem.class)
 public class MixinMilkBucketItem {
@@ -74,14 +75,14 @@ public class MixinMilkBucketItem {
 			if (!keepers.isEmpty() && !(livingEntity instanceof PlayerEntity && ((PlayerEntity) livingEntity).isCreative())) {
 				boolean taunt = false;
 				for (final StatusEffectInstance pe : keepers) {
-					livingEntity.addPotionEffect(pe);
+					livingEntity.addStatusEffect(pe);
 					taunt |= pe.getEffectType() == AdversityEffects.DOOM_EFFECT;
 				}
 
 				if (taunt && livingEntity instanceof ServerPlayerEntity) {
 					((ServerPlayerEntity) livingEntity).sendChatMessage(
-						new TranslatableText("taunt.doomtree.milk_" + (tauntCounter.getAndIncrement() & 3))
-						.setStyle(new Style().setColor(Formatting.LIGHT_PURPLE)), MessageType.SYSTEM);
+							new TranslatableText("taunt.doomtree.milk_" + (tauntCounter.getAndIncrement() & 3))
+							.setStyle(new Style().setColor(Formatting.LIGHT_PURPLE)), MessageType.SYSTEM);
 				}
 			}
 		}

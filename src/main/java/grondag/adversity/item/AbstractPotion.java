@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Copyright (C) 2019 grondag
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,8 +21,6 @@
  ******************************************************************************/
 package grondag.adversity.item;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criterions;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,6 +36,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public abstract class AbstractPotion extends Item {
 
@@ -60,7 +61,7 @@ public abstract class AbstractPotion extends Item {
 		}
 
 		if (player instanceof ServerPlayerEntity) {
-			Criterions.CONSUME_ITEM.handle((ServerPlayerEntity)player, stack);
+			Criterions.CONSUME_ITEM.trigger((ServerPlayerEntity)player, stack);
 		}
 
 		applyEffects(stack, world, player);
@@ -97,7 +98,7 @@ public abstract class AbstractPotion extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(final World world, final PlayerEntity player, final Hand hand) {
 		player.setCurrentHand(hand);
-		return new TypedActionResult<ItemStack>(ActionResult.SUCCESS, player.getStackInHand(hand));
+		return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
 	}
 
 	@Override

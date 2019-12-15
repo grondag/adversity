@@ -24,22 +24,25 @@ package grondag.adversity.model;
 import java.util.List;
 import java.util.function.Function;
 
-import grondag.adversity.Adversity;
-import grondag.adversity.block.tree.DoomLogBlock;
-import grondag.fermion.client.models.SimpleModels;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.math.Direction;
 
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+
+import grondag.adversity.AdversityClient;
+import grondag.adversity.block.tree.DoomLogBlock;
+import grondag.fermion.client.models.SimpleModels;
+
 public class TerminalModel extends LogModel {
-	public static final List<Identifier> TERMINAL_TEXTURES = Adversity.REG.idList("block/doom_log_terminal");
+	public static final List<SpriteIdentifier> TERMINAL_TEXTURES = AdversityClient.REGISTRAR.spriteIdList(SpriteAtlasTexture.BLOCK_ATLAS_TEX, "block/doom_log_terminal");
 
 	protected final Sprite termimnalSprite;
 
-	protected TerminalModel(Sprite sprite, Function<Identifier, Sprite> spriteMap) {
+	protected TerminalModel(Sprite sprite, Function<SpriteIdentifier, Sprite> spriteMap) {
 		super(sprite, spriteMap);
 		termimnalSprite = spriteMap.apply(TERMINAL_TEXTURES.get(0));
 	}
@@ -64,7 +67,7 @@ public class TerminalModel extends LogModel {
 		qe.emit();
 	}
 
-	public static TerminalModel create(Function<Identifier, Sprite> spriteMap) {
+	public static TerminalModel create(Function<SpriteIdentifier, Sprite> spriteMap) {
 		return new TerminalModel(spriteMap.apply(TERMINAL_TEXTURES.get(0)), spriteMap);
 	}
 }

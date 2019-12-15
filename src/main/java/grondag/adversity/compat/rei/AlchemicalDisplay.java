@@ -21,13 +21,14 @@
  ******************************************************************************/
 package grondag.adversity.compat.rei;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableList;
+import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
@@ -36,8 +37,8 @@ import net.minecraft.util.Identifier;
 
 public abstract class AlchemicalDisplay<T extends Recipe<?>> implements RecipeDisplay {
 
-	protected List<List<ItemStack>> inputs;
-	protected List<ItemStack> output;
+	protected List<List<EntryStack>> inputs;
+	protected List<EntryStack> output;
 	protected T display;
 
 	public AlchemicalDisplay(T recipe) {
@@ -46,8 +47,20 @@ public abstract class AlchemicalDisplay<T extends Recipe<?>> implements RecipeDi
 	}
 
 	public AlchemicalDisplay(DefaultedList<Ingredient> ingredients, ItemStack output) {
-		this.inputs = ingredients.stream().map(i -> Arrays.asList(i.getStackArray())).collect(Collectors.toList());
-		this.output = Collections.singletonList(output);
+		final ImmutableList.Builder<List<EntryStack>> outer = ImmutableList.builder();
+
+		for(final Ingredient i : ingredients) {
+			final ImmutableList.Builder<EntryStack> inner = ImmutableList.builder();
+
+			for(final ItemStack stack : i.getMatchingStacksClient()) {
+				inner.add(EntryStack.create(stack));
+			}
+
+			outer.add(inner.build());
+		}
+
+		this.inputs = outer.build();
+		this.output = Collections.singletonList(EntryStack.create(output));
 	}
 
 	@Override
@@ -56,17 +69,17 @@ public abstract class AlchemicalDisplay<T extends Recipe<?>> implements RecipeDi
 	}
 
 	@Override
-	public List<List<ItemStack>> getInput() {
+	public List<List<EntryStack>> getInputEntries() {
 		return inputs;
 	}
 
 	@Override
-	public List<ItemStack> getOutput() {
+	public List<EntryStack> getOutputEntries() {
 		return this.output;
 	}
 
 	@Override
-	public List<List<ItemStack>> getRequiredItems() {
-		return getInput();
+	public List<List<EntryStack>> getRequiredEntries() {
+		return getInputEntries();
 	}
 }

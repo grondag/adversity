@@ -21,16 +21,18 @@
  ******************************************************************************/
 package grondag.adversity.block.treeheart;
 
-import grondag.adversity.block.tree.DoomLogBlock;
-import grondag.adversity.registry.AdversityBlockStates;
-import grondag.adversity.registry.AdversityTags;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.IWorld;
+
+import grondag.adversity.block.tree.DoomLogBlock;
+import grondag.adversity.registry.AdversityBlockStates;
+import grondag.adversity.registry.AdversityTags;
 
 public enum TreeUtils {
 	;
@@ -48,10 +50,10 @@ public enum TreeUtils {
 
 	static boolean canReplace(final BlockState blockState) {
 		return blockState.isAir()
-			|| blockState == AdversityBlockStates.MIASMA_STATE
-			|| blockState == AdversityBlockStates.LEAF_STATE
-			|| blockState == AdversityBlockStates.GLEAM_STATE
-			|| !blockState.getBlock().matches(AdversityTags.PROTECTED_BLOCKS);
+				|| blockState == AdversityBlockStates.MIASMA_STATE
+				|| blockState == AdversityBlockStates.LEAF_STATE
+				|| blockState == AdversityBlockStates.GLEAM_STATE
+				|| !blockState.getBlock().matches(AdversityTags.PROTECTED_BLOCKS);
 	}
 
 	static int DISTANCES[] = new int[64];
@@ -98,16 +100,20 @@ public enum TreeUtils {
 	static boolean placeTrunkSection(final IWorld world, final LongArrayList blocks, final BlockPos.Mutable pos, final int height) {
 		final int x = pos.getX();
 		final int z = pos.getZ();
-		final int limit = world.getTop(Type.MOTION_BLOCKING_NO_LEAVES, x, z);
+		final int limit = world.getTopY(Type.MOTION_BLOCKING_NO_LEAVES, x, z);
 		for (int y = 0; y <= height; y++) {
 			pos.setY(y);
 
 			if (y < limit) {
 				final BlockState state = world.getBlockState(pos);
 
-				if (state.getBlock() == Blocks.BEDROCK) continue;
+				if (state.getBlock() == Blocks.BEDROCK) {
+					continue;
+				}
 
-				if (!TreeUtils.canReplace(state)) return false;
+				if (!TreeUtils.canReplace(state)) {
+					return false;
+				}
 			}
 
 			blocks.add(pos.asLong());

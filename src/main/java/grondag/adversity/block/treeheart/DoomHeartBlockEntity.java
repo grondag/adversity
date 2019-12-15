@@ -24,10 +24,8 @@ package grondag.adversity.block.treeheart;
 import java.util.Comparator;
 import java.util.Random;
 
-import grondag.adversity.entity.WalkerEntity;
-import grondag.adversity.registry.AdversityBlocks;
-import grondag.adversity.registry.AdversityEntities;
 import io.netty.util.internal.ThreadLocalRandom;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -43,6 +41,10 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.World;
+
+import grondag.adversity.entity.WalkerEntity;
+import grondag.adversity.registry.AdversityBlocks;
+import grondag.adversity.registry.AdversityEntities;
 
 public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 	private static final ChunkTicketType<ChunkPos> DOOM_TREE_TICKET = ChunkTicketType.create("doom_tree", Comparator.comparingLong(ChunkPos::toLong));
@@ -74,15 +76,25 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 		super.setPos(pos);
 
 		// NBT deserialization happens before this
-		if (logs == null) logs = new LogTracker(pos);
-		if (builds == null) builds = new TrunkBuilder(pos);
-		if (branches == null) branches = new BranchBuilder(pos);
-		if (troll == null) troll = new Troll(pos);
+		if (logs == null) {
+			logs = new LogTracker(pos);
+		}
+		if (builds == null) {
+			builds = new TrunkBuilder(pos);
+		}
+		if (branches == null) {
+			branches = new BranchBuilder(pos);
+		}
+		if (troll == null) {
+			troll = new Troll(pos);
+		}
 	}
 
+
+
 	@Override
-	public void validate() {
-		super.validate();
+	public void setWorld(World world, BlockPos blockPos) {
+		super.setWorld(world, blockPos);
 
 		if (world !=null  && !world.isClient) {
 			DoomTreeTracker.track(world, pos);
@@ -91,7 +103,7 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 	}
 
 	static void forceChunks(ServerWorld world, ChunkPos chunkPos, boolean enable) {
-		final ServerChunkManager scm = world.method_14178();
+		final ServerChunkManager scm = world.getChunkManager();
 
 		if (enable) {
 			scm.addTicket(DOOM_TREE_TICKET, chunkPos, 4, chunkPos);
@@ -101,13 +113,13 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 	}
 
 	@Override
-	public void invalidate() {
+	public void markInvalid() {
 		if (world !=null  && !world.isClient) {
 			DoomTreeTracker.untrack(world, pos);
 			forceChunks((ServerWorld) world, new ChunkPos(pos), false);
 		}
 
-		super.invalidate();
+		super.markInvalid();
 	}
 
 	@Override
@@ -134,7 +146,9 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 	static final int TARGET_COUNT = 8;
 
 	void spawnMobs() {
-		if (!world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING) || world.getDifficulty() == Difficulty.PEACEFUL) return;
+		if (!world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING) || world.getDifficulty() == Difficulty.PEACEFUL) {
+			return;
+		}
 
 		int count = 0;
 		final BlockPos pos = this.pos;
@@ -169,7 +183,9 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 			final int x = rand.nextInt(65) - 32;
 			final int z = rand.nextInt(65) - 32;
 
-			if (x * x + z * z > 32 * 32) continue;
+			if (x * x + z * z > 32 * 32) {
+				continue;
+			}
 
 			int y = pos.getY() + 16;
 			mPos.set(x + pos.getX(), y, z + pos.getZ());
@@ -257,7 +273,7 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 			logs = new LogTracker(getPos());
 		}
 
-		if  (tag.containsKey(LOG_KEY)) {
+		if  (tag.contains(LOG_KEY)) {
 			logs.fromArray(tag.getIntArray(LOG_KEY));
 		}
 
@@ -269,7 +285,7 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 			branches = new BranchBuilder(getPos());
 		}
 
-		if (tag.containsKey(BRANCH_KEY)) {
+		if (tag.contains(BRANCH_KEY)) {
 			branches.fromArray(tag.getIntArray(BRANCH_KEY));
 		}
 
@@ -277,7 +293,7 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 			troll = new Troll(getPos());
 		}
 
-		if (tag.containsKey(TROLL_KEY)) {
+		if (tag.contains(TROLL_KEY)) {
 			troll.fromArray(tag.getIntArray(TROLL_KEY));
 		}
 
@@ -305,7 +321,9 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 	}
 
 	public void reportBreak(BlockPos pos, boolean isLog) {
-		if (itMe) return;
+		if (itMe) {
+			return;
+		}
 
 		if (isLog && logs.contains(pos)) {
 			builds.enqueue(pos.asLong());

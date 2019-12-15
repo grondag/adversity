@@ -21,11 +21,12 @@
  ******************************************************************************/
 package grondag.adversity.compat.rei;
 
-import grondag.adversity.registry.AdversityBlocks;
-import me.shedaniel.rei.api.Renderer;
+import me.shedaniel.rei.api.EntryStack;
+
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+
+import grondag.adversity.registry.AdversityBlocks;
 
 public class BrazierCategory extends AlchemicalCategory<BrazierDisplay> {
 	@Override
@@ -34,8 +35,8 @@ public class BrazierCategory extends AlchemicalCategory<BrazierDisplay> {
 	}
 
 	@Override
-	public Renderer getIcon() {
-		return Renderer.fromItemStack(new ItemStack(AdversityBlocks.BRAZIER_BLOCK));
+	public EntryStack getLogo() {
+		return EntryStack.create(AdversityBlocks.BRAZIER_BLOCK);
 	}
 
 	@Override

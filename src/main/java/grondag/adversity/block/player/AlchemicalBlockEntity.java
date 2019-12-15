@@ -23,14 +23,8 @@ package grondag.adversity.block.player;
 
 import java.util.Random;
 
-import grondag.adversity.packet.AlchemyCraftS2C;
-import grondag.adversity.packet.XpDrainS2C;
-import grondag.adversity.registry.AdversityParticles;
-import grondag.fermion.client.RenderRefreshProxy;
-import grondag.fermion.varia.XpHelper;
 import io.netty.util.internal.ThreadLocalRandom;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
+
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -41,6 +35,15 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
+
+import grondag.adversity.packet.AlchemyCraftS2C;
+import grondag.adversity.packet.XpDrainS2C;
+import grondag.adversity.registry.AdversityParticles;
+import grondag.fermion.client.RenderRefreshProxy;
+import grondag.fermion.varia.XpHelper;
 
 public abstract class AlchemicalBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable, RenderAttachmentBlockEntity {
 	public enum Mode {
@@ -112,16 +115,6 @@ public abstract class AlchemicalBlockEntity extends BlockEntity implements Ticka
 		super.setPos(pos);
 	}
 
-	@Override
-	public void validate() {
-		super.validate();
-	}
-
-	@Override
-	public void invalidate() {
-		super.invalidate();
-	}
-
 	int tickCounter = 0;
 
 	@Override
@@ -156,7 +149,9 @@ public abstract class AlchemicalBlockEntity extends BlockEntity implements Ticka
 	}
 
 	protected static final TargetPredicate HAS_XP = new TargetPredicate().includeTeammates().setBaseMaxDistance(3).setPredicate(p -> {
-		if (!(p instanceof PlayerEntity)) return false;
+		if (!(p instanceof PlayerEntity)) {
+			return false;
+		}
 		final PlayerEntity player = (PlayerEntity) p;
 		return player.isCreative() || player.totalExperience >= XP_COST;
 	});
@@ -174,7 +169,7 @@ public abstract class AlchemicalBlockEntity extends BlockEntity implements Ticka
 					XpHelper.changeXpNoScore(player, -XP_COST);
 				}
 
-				XpDrainS2C.send(world, player.x, player.y, player.z, pos);
+				XpDrainS2C.send(world, player.getX(), player.getY(), player.getZ(), pos);
 				units -= UNITS_PER_LEVEL;
 
 				if(units == 0) {
@@ -212,10 +207,10 @@ public abstract class AlchemicalBlockEntity extends BlockEntity implements Ticka
 
 		if (rand.nextInt(4) == 0) {
 			world.addImportantParticle(ParticleTypes.BUBBLE_POP,
-				x + 0.5 + rand.nextDouble() * 0.25,
-				y + units / 32.0,
-				z + 0.5 + rand.nextDouble() * 0.25,
-				0.0D, 0.04D, 0.0D);
+					x + 0.5 + rand.nextDouble() * 0.25,
+					y + units / 32.0,
+					z + 0.5 + rand.nextDouble() * 0.25,
+					0.0D, 0.04D, 0.0D);
 		}
 	}
 
