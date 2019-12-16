@@ -26,6 +26,7 @@ import grondag.adversity.Adversity;
 import grondag.fermion.gui.AbstractSimpleScreen;
 import grondag.fermion.gui.control.MarkdownControl;
 import grondag.fermion.gui.control.Panel;
+import grondag.fonthack.FontHackClient;
 import grondag.mcmd.MarkdownLoader;
 
 public class NoteScreen extends AbstractSimpleScreen {
@@ -35,7 +36,7 @@ public class NoteScreen extends AbstractSimpleScreen {
 
 	@Override
 	public void init() {
-		font = minecraft.getFontManager().getTextRenderer(AdversityScreenHelper.READING_FONT);
+		font = minecraft.getFontManager().getTextRenderer(FontHackClient.READING_FONT);
 		super.init();
 	}
 
