@@ -24,12 +24,14 @@ package grondag.adversity.gui;
 
 import grondag.adversity.Adversity;
 import grondag.fermion.gui.AbstractSimpleScreen;
+import grondag.fermion.gui.control.AbstractControl;
 import grondag.fermion.gui.control.MarkdownControl;
-import grondag.fermion.gui.control.Panel;
 import grondag.fonthack.FontHackClient;
 import grondag.mcmd.MarkdownLoader;
 
 public class NoteScreen extends AbstractSimpleScreen {
+	MarkdownControl md;
+
 	public NoteScreen() {
 		super();
 	}
@@ -41,13 +43,18 @@ public class NoteScreen extends AbstractSimpleScreen {
 	}
 
 	@Override
-	public void addControls(Panel mainPanel) {
-		mainPanel.add(new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale")), font));
+	public void addControls() {
+		md = new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale")), font);
+		md.setLeft(screenLeft() + AbstractControl.CONTROL_EXTERNAL_MARGIN);
+		md.setTop(screenTop() + AbstractControl.CONTROL_EXTERNAL_MARGIN);
+		md.setWidth(screenWidth() - AbstractControl.CONTROL_EXTERNAL_MARGIN * 2);
+		md.setHeight(screenHeight() - AbstractControl.CONTROL_EXTERNAL_MARGIN * 2);
+
+		children.add(md);
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
-		// TODO Auto-generated method stub
-		super.render(mouseX, mouseY, partialTicks);
+	protected void drawControls(int mouseX, int mouseY, float partialTicks) {
+		md.drawControl(mouseX, mouseY, partialTicks);
 	}
 }
