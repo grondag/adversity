@@ -24,7 +24,6 @@ package grondag.adversity.gui;
 
 import grondag.adversity.Adversity;
 import grondag.fermion.gui.AbstractSimpleScreen;
-import grondag.fermion.gui.control.AbstractControl;
 import grondag.fermion.gui.control.MarkdownControl;
 import grondag.fonthack.FontHackClient;
 import grondag.mcmd.MarkdownLoader;
@@ -45,10 +44,10 @@ public class NoteScreen extends AbstractSimpleScreen {
 	@Override
 	public void addControls() {
 		md = new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale")), font);
-		md.setLeft(screenLeft() + AbstractControl.CONTROL_EXTERNAL_MARGIN);
-		md.setTop(screenTop() + AbstractControl.CONTROL_EXTERNAL_MARGIN);
-		md.setWidth(screenWidth() - AbstractControl.CONTROL_EXTERNAL_MARGIN * 2);
-		md.setHeight(screenHeight() - AbstractControl.CONTROL_EXTERNAL_MARGIN * 2);
+		md.setLeft(screenLeft() + theme.externalMargin);
+		md.setTop(screenTop() + theme.externalMargin);
+		md.setWidth(screenWidth() - theme.externalMargin * 2);
+		md.setHeight(screenHeight() - theme.externalMargin * 2);
 
 		children.add(md);
 	}
