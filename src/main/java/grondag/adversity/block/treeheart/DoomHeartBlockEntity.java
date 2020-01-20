@@ -93,8 +93,8 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 
 
 	@Override
-	public void setWorld(World world, BlockPos blockPos) {
-		super.setWorld(world, blockPos);
+	public void setLocation(World world, BlockPos blockPos) {
+		super.setLocation(world, blockPos);
 
 		if (world !=null  && !world.isClient) {
 			DoomTreeTracker.track(world, pos);
@@ -103,6 +103,7 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 	}
 
 	static void forceChunks(ServerWorld world, ChunkPos chunkPos, boolean enable) {
+		@SuppressWarnings("resource")
 		final ServerChunkManager scm = world.getChunkManager();
 
 		if (enable) {
@@ -168,7 +169,7 @@ public class DoomHeartBlockEntity extends BlockEntity implements Tickable {
 			final BlockPos p = findSpawnPosition();
 			if (p != null) {
 				final WalkerEntity e = new WalkerEntity(AdversityEntities.WALKER, world);
-				e.setPosition(p.getX(), p.getY() + 2, p.getZ());
+				e.setPos(p.getX(), p.getY() + 2, p.getZ());
 				world.spawnEntity(e);
 			}
 		}
