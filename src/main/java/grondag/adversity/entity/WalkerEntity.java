@@ -283,7 +283,7 @@ public class WalkerEntity extends HostileEntity {
 	@Override
 	public void updateSwimming() {
 		if (!world.isClient) {
-			if (canMoveVoluntarily() && isInsideWater() && isTargetingUnderwater()) {
+			if (canMoveVoluntarily() && isInsideWaterOrBubbleColumn() && isTargetingUnderwater()) {
 				navigation = waterNavigation;
 				setSwimming(true);
 			} else {
@@ -298,7 +298,7 @@ public class WalkerEntity extends HostileEntity {
 			return true;
 		} else {
 			final LivingEntity livingEntity_1 = getTarget();
-			return livingEntity_1 != null && livingEntity_1.isInsideWater();
+			return livingEntity_1 != null && livingEntity_1.isInsideWaterOrBubbleColumn();
 		}
 	}
 
