@@ -48,7 +48,6 @@ import grondag.adversity.registry.AdversitySounds;
 import grondag.fermion.position.PackedBlockPos;
 import grondag.fermion.position.PackedBlockPosList;
 
-@SuppressWarnings("deprecation")
 public enum DoomS2C {
 	;
 

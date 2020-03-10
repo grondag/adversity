@@ -54,7 +54,6 @@ import grondag.adversity.registry.AdversityTags;
 import grondag.fermion.position.PackedBlockPos;
 import grondag.fermion.position.PackedBlockPosList;
 
-@SuppressWarnings({ "serial", "deprecation" })
 class Troll extends IntHeapPriorityQueue {
 	private static final int MAX_INDEX;
 	private static final int[] OFFSETS;
