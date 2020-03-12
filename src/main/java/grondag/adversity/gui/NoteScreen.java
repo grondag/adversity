@@ -37,13 +37,13 @@ public class NoteScreen extends AbstractSimpleScreen {
 
 	@Override
 	public void init() {
-		font = minecraft.getFontManager().getTextRenderer(FontHackClient.READING_FONT);
+		textRenderer = client.getFontManager().getTextRenderer(FontHackClient.READING_FONT);
 		super.init();
 	}
 
 	@Override
 	public void addControls() {
-		md = new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale")), font);
+		md = new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale")), textRenderer);
 		md.setLeft(screenLeft() + theme.externalMargin);
 		md.setTop(screenTop() + theme.externalMargin);
 		md.setWidth(screenWidth() - theme.externalMargin * 2);

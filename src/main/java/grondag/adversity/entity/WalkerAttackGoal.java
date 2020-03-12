@@ -120,7 +120,7 @@ public class WalkerAttackGoal extends Goal {
 		}
 
 		// have chance at melee
-		return(!walker.getNavigation().isIdle() || walker.isInWalkTargetRange(new BlockPos(target)));
+		return(!walker.getNavigation().isIdle() || walker.isInWalkTargetRange(new BlockPos(target.getPos())));
 	}
 
 	@Override

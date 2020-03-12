@@ -54,7 +54,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockPos.PooledMutable;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -146,11 +145,14 @@ public class Explodinator extends Explosion {
 			final int rx = buf.readByte();
 			final int ry = buf.readByte();
 			final int rz = buf.readByte();
-			affectedBlocks.add(BlockPos.PooledMutable.get().set(ox + rx, oy + ry, oz + rz));
+
+			// PERF: use packed pos or something else here - pooled mutable no longer available
+			affectedBlocks.add(new BlockPos(ox + rx, oy + ry, oz + rz));
 		}
 
 		return this;
 	}
+
 
 	public Explodinator prepare(World world,
 			@Nullable Entity entity,
@@ -242,7 +244,8 @@ public class Explodinator extends Explosion {
 		}
 
 		for(final long l : blocks) {
-			affectedBlocks.add(BlockPos.PooledMutable.get().set(l));
+			// PERF: use packed pos or something else here - pooled mutable no longer available
+			affectedBlocks.add(BlockPos.fromLong(l));
 		}
 
 		final float radius = power * 2.0F;
@@ -400,10 +403,6 @@ public class Explodinator extends Explosion {
 
 	@Override
 	public void clearAffectedBlocks() {
-		for(final BlockPos p : affectedBlocks) {
-			((PooledMutable) p).close();
-		}
-
 		affectedBlocks.clear();
 	}
 

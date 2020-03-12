@@ -302,7 +302,7 @@ class Troll extends IntHeapPriorityQueue {
 	static BlockState trollState(World world, BlockState fromState, BlockPos pos) {
 		final Block block = fromState.getBlock();
 
-		if (block == Blocks.BEDROCK || block.matches(AdversityTags.IGNORED_BLOCKS)) {
+		if (block == Blocks.BEDROCK || block.isIn(AdversityTags.IGNORED_BLOCKS)) {
 			return fromState;
 		}
 
@@ -324,7 +324,7 @@ class Troll extends IntHeapPriorityQueue {
 		}
 
 		if (TreeUtils.canReplace(fromState)) {
-			if (block.matches(BlockTags.LOGS) && fromState.contains(PillarBlock.AXIS)) {
+			if (block.isIn(BlockTags.LOGS) && fromState.contains(PillarBlock.AXIS)) {
 				return AdversityBlockStates.DOOMED_LOG_STATE.with(PillarBlock.AXIS, fromState.get(PillarBlock.AXIS));
 			} else if (block.isFullOpaque(fromState, world, pos)) {
 				if (material == Material.STONE) {

@@ -30,12 +30,12 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.container.Container;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
@@ -72,7 +72,7 @@ public class WardedBarrelBlock extends BlockWithEntity {
 			final BlockEntity be = world.getBlockEntity(pos);
 
 			if (be instanceof WardedBarrelBlockEntity) {
-				player.openContainer((WardedBarrelBlockEntity) be);
+				player.openHandledScreen((WardedBarrelBlockEntity) be);
 				player.incrementStat(Stats.OPEN_BARREL);
 			}
 
@@ -87,7 +87,7 @@ public class WardedBarrelBlock extends BlockWithEntity {
 
 			if (be instanceof Inventory) {
 				ItemScatterer.spawn(world, pos, (Inventory)be);
-				world.updateHorizontalAdjacent(pos, this);
+				world.updateComparators(pos, this);
 			}
 
 			super.onBlockRemoved(blockState, world, pos, otherState, flag);
@@ -132,7 +132,7 @@ public class WardedBarrelBlock extends BlockWithEntity {
 
 	@Override
 	public int getComparatorOutput(BlockState blockState, World world, BlockPos pos) {
-		return Container.calculateComparatorOutput(world.getBlockEntity(pos));
+		return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
 	}
 
 	@Override

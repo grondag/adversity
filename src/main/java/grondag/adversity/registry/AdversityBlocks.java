@@ -257,7 +257,8 @@ public enum AdversityBlocks {
 		}
 	});
 
-	public static Block WARDED_TORCH = REG.blockNoItem("warded_torch", new TorchBlock(FabricBlockSettings.of(Material.PART).noCollision().breakInstantly().lightLevel(14).sounds(BlockSoundGroup.WOOD).build()) {
+	public static Block WARDED_TORCH = REG.blockNoItem("warded_torch", new TorchBlock(FabricBlockSettings.of(Material.PART).noCollision().breakInstantly().lightLevel(14).sounds(BlockSoundGroup.WOOD).build(), AdversityParticles.WARDED_FLAME) {
+		// TODO: may no longer be correct - particle effect was added to constructor in 1.16
 		@Override
 		@Environment(EnvType.CLIENT)
 		public void randomDisplayTick(BlockState blockState, World world, BlockPos pos, Random rand) {
@@ -276,7 +277,9 @@ public enum AdversityBlocks {
 		}
 	});
 
-	public static Block WARDED_WALL_TORCH = REG.blockNoItem("warded_wall_torch", new WallTorchBlock(FabricBlockSettings.of(Material.PART).noCollision().breakInstantly().lightLevel(14).sounds(BlockSoundGroup.WOOD).dropsLike(WARDED_TORCH).build()) {
+	public static Block WARDED_WALL_TORCH = REG.blockNoItem("warded_wall_torch", new WallTorchBlock(FabricBlockSettings.of(Material.PART).noCollision().breakInstantly().lightLevel(14).sounds(BlockSoundGroup.WOOD).dropsLike(WARDED_TORCH).build(), AdversityParticles.WARDED_FLAME) {
+
+		// TODO: may no longer be correct - particle effect was added to constructor in 1.16
 		@Override
 		@Environment(EnvType.CLIENT)
 		public void randomDisplayTick(BlockState blockState, World world, BlockPos pos, Random rand) {

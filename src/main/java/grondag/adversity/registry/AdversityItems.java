@@ -85,14 +85,14 @@ public enum AdversityItems {
 	public static final Item ENCRUSTED_BOOTS =  REG.armorItem("encrusted_boots", ENCRUSTED_ARMOR_MATERIAL, EquipmentSlot.FEET);
 
 	public static final ToolMaterial WARDED_IRON_TOOL_MATERIAL = SimpleToolMaterial.of(2, 300, 6.6F, 2.2F, 15, WARDED_IRON_INGOT);
-	public static final Item WARDED_IRON_HOE = REG.item("warded_iron_hoe", new HoeItem(WARDED_IRON_TOOL_MATERIAL, -1.0F, REG.itemSettings()){});
+	public static final Item WARDED_IRON_HOE = REG.item("warded_iron_hoe", new HoeItem(WARDED_IRON_TOOL_MATERIAL, -2, -1.0F, REG.itemSettings()){});
 	public static final Item WARDED_IRON_SHOVEL = REG.item("warded_iron_shovel", new ShovelItem(WARDED_IRON_TOOL_MATERIAL, 1.5F, -3.0F, REG.itemSettings()){});
 	public static final Item WARDED_IRON_PICKAXE = REG.item("warded_iron_pickaxe", new PickaxeItem(WARDED_IRON_TOOL_MATERIAL, 1, -2.8F, REG.itemSettings()){});
 	public static final Item WARDED_IRON_AXE = REG.item("warded_iron_axe", new AxeItem(WARDED_IRON_TOOL_MATERIAL, 6.0F, -3.1F, REG.itemSettings()){});
 	public static final Item WARDED_IRON_SWORD = REG.item("warded_iron_sword", new SwordItem(WARDED_IRON_TOOL_MATERIAL, 3, -2.4F, REG.itemSettings()){});
 
 	public static final ToolMaterial ENCRUSTED_TOOL_MATERIAL = SimpleToolMaterial.of(3, 1800, 8.8F, 3.3F, 11, WARDED_DIAMOND);
-	public static final Item ENCRUSTED_HOE = REG.item("encrusted_hoe", new HoeItem(ENCRUSTED_TOOL_MATERIAL, 0.0F, REG.itemSettings()){});
+	public static final Item ENCRUSTED_HOE = REG.item("encrusted_hoe", new HoeItem(ENCRUSTED_TOOL_MATERIAL, -3, 0.0F, REG.itemSettings()){});
 	public static final Item ENCRUSTED_SHOVEL = REG.item("encrusted_shovel", new ShovelItem(ENCRUSTED_TOOL_MATERIAL, 1.5F, -3.0F, REG.itemSettings()){});
 	public static final Item ENCRUSTED_PICKAXE = REG.item("encrusted_pickaxe", new PickaxeItem(ENCRUSTED_TOOL_MATERIAL, 1, -2.8F, REG.itemSettings()){});
 	public static final Item ENCRUSTED_AXE = REG.item("encrusted_axe", new AxeItem(ENCRUSTED_TOOL_MATERIAL, 5.0F, -3.0F, REG.itemSettings()){});

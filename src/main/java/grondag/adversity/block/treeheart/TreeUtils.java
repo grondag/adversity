@@ -53,7 +53,7 @@ public enum TreeUtils {
 				|| blockState == AdversityBlockStates.MIASMA_STATE
 				|| blockState == AdversityBlockStates.LEAF_STATE
 				|| blockState == AdversityBlockStates.GLEAM_STATE
-				|| !blockState.getBlock().matches(AdversityTags.PROTECTED_BLOCKS);
+				|| !blockState.getBlock().isIn(AdversityTags.PROTECTED_BLOCKS);
 	}
 
 	static int DISTANCES[] = new int[64];
