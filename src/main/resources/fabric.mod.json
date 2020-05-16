@@ -39,7 +39,7 @@
 	  }
     ],
 	"depends": {
-		"fabricloader": ">=0.4.0",
+    "fabricloader": "\u003e\u003d0.8.2",
 		"fabric": "*"
 	}
 }
