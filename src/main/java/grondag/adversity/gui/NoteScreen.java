@@ -22,14 +22,16 @@
 
 package grondag.adversity.gui;
 
+import net.minecraft.client.util.math.MatrixStack;
+
 import grondag.adversity.Adversity;
 import grondag.fermion.gui.AbstractSimpleScreen;
-import grondag.fermion.gui.control.MarkdownControl;
 import grondag.fonthack.FontHackClient;
+import grondag.mcmd.MarkdownControl;
 import grondag.mcmd.MarkdownLoader;
 
 public class NoteScreen extends AbstractSimpleScreen {
-	MarkdownControl md;
+	grondag.mcmd.MarkdownControl md;
 
 	public NoteScreen() {
 		super();
@@ -37,13 +39,13 @@ public class NoteScreen extends AbstractSimpleScreen {
 
 	@Override
 	public void init() {
-		textRenderer = client.getFontManager().getTextRenderer(FontHackClient.READING_FONT);
+		textRenderer = FontHackClient.getTextRenderer(FontHackClient.READING_FONT);
 		super.init();
 	}
 
 	@Override
 	public void addControls() {
-		md = new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale")), textRenderer);
+		md = new MarkdownControl(this, MarkdownLoader.get(Adversity.REG.id("sb_scale")), FontHackClient.READING_FONT);
 		md.setLeft(screenLeft() + theme.externalMargin);
 		md.setTop(screenTop() + theme.externalMargin);
 		md.setWidth(screenWidth() - theme.externalMargin * 2);
@@ -53,7 +55,7 @@ public class NoteScreen extends AbstractSimpleScreen {
 	}
 
 	@Override
-	protected void drawControls(int mouseX, int mouseY, float partialTicks) {
-		md.drawControl(mouseX, mouseY, partialTicks);
+	protected void drawControls(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		md.drawControl(matrixStack, mouseX, mouseY, partialTicks);
 	}
 }
