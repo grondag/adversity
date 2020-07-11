@@ -11,12 +11,8 @@ repositories {
 		url = "https://jitpack.io"
 	}
  	maven {
-    	name = "grondag"
-    	url = "https://grondag-repo.appspot.com"
-    	credentials {
-            username "guest"
-            password ""
-		}
+    	name = "dblsaiko"
+    	uril = "https://maven.dblsaiko.net/"
     }
 }
 
